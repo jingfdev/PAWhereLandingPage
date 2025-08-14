@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+    postgres:
+        image: postgres:latest
+        container_name: pawhere_postgres
+        environment:
+            POSTGRES_USER: pawhere
+            POSTGRES_PASSWORD: pawhere
+            POSTGRES_DB: pawherelandingpage
+        ports:
+            - "5439:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+
+    pgadmin:
+        image: dpage/pgadmin4:latest
+        container_name: pawhere_pgadmin
+        environment:
+            PGADMIN_DEFAULT_EMAIL: pawhere@gmail.com
+            PGADMIN_DEFAULT_PASSWORD: pawhere
+        ports:
+            - "8081:80"
+        depends_on:
+            - postgres
+
+volumes:
+    postgres_data:

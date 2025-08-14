@@ -1,0 +1,76 @@
+Create a React.js single-page landing website for the product PAWhere using the brand colors:
+
+Primary Yellow: #f4a905
+
+Primary Blue: #10459b
+
+Black: #000000
+
+White: #ffffff
+
+1. Hero Section (Top of the Page)
+
+Background: #10459b (Primary Blue) with white text.
+
+Headline: "PAW Where? PAW Here!!! 🐕📍" in #f4a905.
+
+Subheading: "Real-time tracking, smart geofencing, and instant alerts — all in one lightweight device. Keep your pet safe, wherever life takes you." in white.
+
+Call-to-Action button in Primary Yellow (#f4a905) with black text and rounded corners.
+
+Clicking the button opens a modal form for users to enter their Email or Phone Number.
+
+Save form data to a backend API endpoint (Node.js/Express) connected to a SQLite database.
+
+2. Product Visual / Showcase
+
+Display photo1.png, photo2.png, photo3.png, and feature.png in a responsive carousel with white background.
+
+Add feature description text in #10459b:
+"Real-time GPS Tracking, 4G LTE Connectivity, Safe Zone Alerts, Lightweight & Pet-Safe, 10+ Days Battery Life."
+
+3. Early Customer Tester Section
+
+Background: Primary Yellow (#f4a905) with black text.
+
+Text: "🐾 Your Pet Deserves VIP Safety Access: Be one of the first to try PAWhere before anyone else. Test it, love it, and help us make pet tracking purr-fect!" in bold.
+
+Include the same registration form from the Hero Section.
+
+4. Footer
+
+Background: Black (#000000) with white text.
+
+Text: "PAW Where? PAW Here!!! 🐕📍" in yellow.
+
+Social media icons (white) with hover color: #f4a905 linked to:
+
+Facebook: https://www.facebook.com/profile.php?id=61565003537217
+
+Instagram: https://instagram.com/aerokiq25
+
+TikTok: https://tiktok.com/@pawhereaerokiq
+
+Email: pawhereaerokiq@gmail.com
+
+5. Technical Requirements
+
+Use React.js + Tailwind CSS for styling.
+
+Components must be reusable and mobile-responsive.
+
+Backend: Node.js/Express with SQLite database to store user registrations.
+
+Provide API endpoints: /register (POST) to save data and /subscribers (GET) to retrieve data.
+
+Add README.md with installation & deployment steps.
+
+Include GitHub Pages deployment instructions for the frontend. Backend can be deployed separately (e.g., Render or Railway).
+
+6. Output
+
+Provide full React.js frontend code, backend code, and README.md.
+
+Include styling that uses brand colors consistently.
+
+Ensure all assets are referenced correctly.
