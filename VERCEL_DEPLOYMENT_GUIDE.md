@@ -1,13 +1,13 @@
 # Vercel Deployment Guide for PAWhere
 
-This guide will walk you through deploying your PAWhere React landing page to Vercel, including database setup and environment configuration.
+This is the vercel deployment guide lisence under PAWhere team, and this is for deploying PAWhere Landing Page to vercel, including database setup and environment configuration.
 
 ## Prerequisites
 
 - GitHub account
 - Vercel account (free tier available)
 - Neon Database account (for PostgreSQL hosting)
-- Your PAWhere project files
+- PAWhere project files
 
 ## Step 1: Prepare Your Project for Deployment
 
@@ -104,26 +104,9 @@ npx drizzle-kit push:pg
 
 ## Step 3: Push Code to GitHub
 
-### 3.1 Initialize Git Repository
+### 3.1: Clone Git Repository
 ```bash
-git init
-git add .
-git commit -m "Initial commit - PAWhere landing page"
-```
-
-### 3.2 Create GitHub Repository
-1. Go to [GitHub.com](https://github.com)
-2. Click "New repository"
-3. Name it `pawhere-landing-page`
-4. Set it to Public or Private
-5. Don't initialize with README (you already have files)
-6. Click "Create repository"
-
-### 3.3 Push to GitHub
-```bash
-git remote add origin https://github.com/yourusername/pawhere-landing-page.git
-git branch -M main
-git push -u origin main
+git clone https://github.com/jingfdev/PAWhereLandingPage.git
 ```
 
 ## Step 4: Deploy to Vercel
@@ -159,7 +142,7 @@ To add environment variables:
 ### 4.4 Deploy
 1. Click "Deploy"
 2. Wait for the build process to complete
-3. Your app will be live at `https://your-project-name.vercel.app`
+3. Your app will be live at `https://PAWhereLandingPage.vercel.app`
 
 ## Step 5: Verify Deployment
 
