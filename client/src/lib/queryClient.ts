@@ -7,12 +7,28 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
+function getApiUrl(path: string): string {
+  // If the URL is already absolute, use it as is
+  if (path.startsWith('http')) {
+    return path;
+  }
+  
+  // Remove leading slash if present
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  
+  // Use VITE_API_BASE_URL if available, otherwise default to current origin
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin;
+  
+  return `${baseUrl}/${cleanPath}`;
+}
+
 export async function apiRequest(
   method: string,
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
+  const apiUrl = getApiUrl(url);
+  const res = await fetch(apiUrl, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
     body: data ? JSON.stringify(data) : undefined,
