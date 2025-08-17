@@ -446,7 +446,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
 
           {/* Compact Title - Reduced Size */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-8 leading-tight">
+<h1 className="text-6xl sm:text-7xl lg:text-8xl font-black mb-12 leading-tight">
             <div className="mb-2">
               <span className="text-primary-blue drop-shadow-2xl">
                 PAW Where?
