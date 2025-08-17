@@ -427,7 +427,6 @@ import { Button } from "@/components/ui/button";
 import { RegistrationModal } from "@/components/registration-modal";
 import { ProductCarousel } from "@/components/product-carousel";
 import mobileTrackingImage from "@assets/mobileTracking.png";
-import pawhereLogoImage from "@assets/PAWhere_logo.png";
 
 export default function Home() {
   return (
@@ -445,14 +444,6 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-primary-yellow/40 via-transparent to-amber-300/30"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          {/* PAWhere Logo */}
-          <div className="mb-8">
-            <img
-              src={pawhereLogoImage}
-              alt="PAWhere Logo"
-              className="h-24 sm:h-32 lg:h-40 mx-auto filter drop-shadow-2xl"
-            />
-          </div>
 
           {/* Compact Title - Reduced Size */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-8 leading-tight">
