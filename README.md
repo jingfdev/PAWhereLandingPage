@@ -63,7 +63,7 @@ PORT=3000
 ```bash
 npm run dev
 ```
-The application will be available at `http://localhost:5000`
+The application will be available at `http://localhost:3000`
 
 ### Production Build
 ```bash
@@ -83,11 +83,6 @@ docker-compose up -d
 # Stop database
 docker-compose down
 ```
-
-### Database Access
-- **PgAdmin Interface**: http://localhost:8081
-- **Credentials**: pawhere@gmail.com / pawhere
-- **Database Port**: 5439
 
 For detailed database setup instructions, see [DATABASE_SETUP.md](DATABASE_SETUP.md)
 
@@ -131,41 +126,13 @@ Replace images in `attached_assets/` directory:
 
 ## 🚀 Deployment Options
 
-### Option 1: Replit Deployments (Easiest)
-1. Open your project in Replit
-2. Click the **Deploy** button
-3. Choose **Autoscale Deployment**
-4. Set build command: `npm run build`
-5. Set run command: `npm run dev`
-6. Click **Deploy**
-
-Your app will be live at `https://your-project-name.replit.app`
-
-### Option 2: Vercel (Free & Fast)
+### Option: Vercel (Free & Fast)
 ```bash
 # Install Vercel CLI
 npm i -g vercel
 
 # Deploy
 vercel --prod
-```
-
-### Option 3: Netlify
-1. Build the project: `npm run build`
-2. Drag and drop the `dist` folder to [Netlify Drop](https://app.netlify.com/drop)
-3. Your site is live!
-
-### Option 4: GitHub Pages
-```bash
-# Install gh-pages
-npm install --save-dev gh-pages
-
-# Add to package.json scripts:
-"deploy": "gh-pages -d dist"
-
-# Deploy
-npm run build
-npm run deploy
 ```
 
 ## 🔧 Development Scripts
@@ -191,14 +158,12 @@ npm run type-check   # TypeScript type checking
 2. Verify mobile phone mockup displays correctly
 3. Check hover animations and feature cards
 
-## 🐛 Troubleshooting
-
 ### Common Issues
 
-**Port 5000 already in use**
+**Port 3000 already in use**
 ```bash
-# Kill process using port 5000
-npx kill-port 5000
+# Kill process using port 3000
+npx kill-port 3000
 
 # Or change port in package.json
 "dev": "NODE_ENV=development tsx server/index.ts --port 3000"
@@ -220,20 +185,6 @@ rm -rf node_modules package-lock.json
 npm install
 ```
 
-## 📊 Performance Optimization
-
-- **Image Optimization**: All product images are optimized for web
-- **Code Splitting**: Automatic with Vite bundler
-- **Lazy Loading**: Images load progressively
-- **Caching**: Browser caching enabled for static assets
-
-## 🔒 Security
-
-- **Input Validation**: All form inputs validated with Zod schemas
-- **SQL Injection Protection**: Parameterized queries with Drizzle ORM
-- **Environment Variables**: Sensitive data stored in `.env` files
-- **CORS Configuration**: Proper cross-origin resource sharing setup
-
 ## 📈 Analytics & Monitoring
 
 To add analytics:
@@ -241,33 +192,9 @@ To add analytics:
 2. Install analytics package: `npm install @vercel/analytics`
 3. Import and configure in `client/src/main.tsx`
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/new-feature`
-3. Commit changes: `git commit -am 'Add new feature'`
-4. Push to branch: `git push origin feature/new-feature`
-5. Submit a Pull Request
-
 ## 📄 License
 
 This project is licensed under PAWhere. Build with love for pet parents. 🐾💕
-
-## 👥 Team
-
-- **Development**: React.js, TypeScript, Express.js
-- **Design**: Tailwind CSS, Modern UI/UX
-- **Database**: PostgreSQL with Drizzle ORM
-- **Deployment**: Replit, Vercel, Netlify compatible
-
-## 📞 Support
-
-For support and questions:
-- Create an issue in the repository
-- Contact the development team
-- Check the [troubleshooting section](#🐛-troubleshooting)
-
----
 
 **Built with ❤️ for pet parents everywhere**
 
