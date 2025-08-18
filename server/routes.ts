@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { storage } from "./storage";
-import { checkConnection } from "./db";
+import { checkConnection, getDbInfo } from "./db";
 import { insertRegistrationSchema } from "../shared/schema";
 import { z } from "zod";
 
@@ -99,10 +99,10 @@ export function registerRoutes(app: Express): void {
   // Database health check
   app.get("/api/health/db", async (_req, res) => {
     const ok = await checkConnection();
-    res.status(ok ? 200 : 500).json({ ok });
+    res.status(ok ? 200 : 500).json({ ok, info: getDbInfo() });
   });
   app.get("/health/db", async (_req, res) => {
     const ok = await checkConnection();
-    res.status(ok ? 200 : 500).json({ ok });
+    res.status(ok ? 200 : 500).json({ ok, info: getDbInfo() });
   });
 }

@@ -19,7 +19,7 @@ if (!process.env.DATABASE_URL) {
 console.log('Connecting to database with URL:', 
   process.env.DATABASE_URL.replace(/:([^:]+)@/, ':***@'));
 
-const useNeonHttp = !!process.env.VERCEL || /neon\.tech/i.test(process.env.DATABASE_URL);
+const useNeonHttp = !!process.env.VERCEL || /neon\.tech/i.test(process.env.DATABASE_URL || "");
 
 let db: ReturnType<typeof drizzlePostgres> | ReturnType<typeof drizzleNeon>;
 
@@ -56,6 +56,20 @@ if (useNeonHttp) {
 }
 
 export { db };
+
+export function getDbInfo() {
+  const url = process.env.DATABASE_URL || "";
+  const masked = url.replace(/:\/\/([^:]+):[^@]+@/, '://$1:***@');
+  const host = (() => {
+    try {
+      const u = new URL(url);
+      return u.host;
+    } catch {
+      return "";
+    }
+  })();
+  return { driver: useNeonHttp ? 'neon-http' : 'postgres-js', hasUrl: !!url, urlMasked: masked, host };
+}
 
 // Ensure required extension and tables exist (idempotent)
 export async function ensureSchema() {

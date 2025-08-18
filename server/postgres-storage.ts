@@ -3,6 +3,7 @@ import { db } from './db';
 import { users, registrations } from '../shared/schema';
 import type { IStorage } from './storage-types';
 import type { User, InsertUser, Registration, InsertRegistration } from './storage-types.d';
+import { randomUUID } from 'node:crypto';
 
 // Helper function to convert DB registration to our domain model
 const toRegistration = (dbReg: any): Registration => ({
@@ -25,13 +26,17 @@ export class PostgresStorage implements IStorage {
   }
 
   async createUser(insertUser: InsertUser) {
-    const [user] = await db.insert(users).values(insertUser).returning();
+    const [user] = await db.insert(users).values({
+      id: randomUUID(),
+      ...insertUser,
+    }).returning();
     return user;
   }
 
   async createRegistration(insertRegistration: InsertRegistration) {
     const [registration] = await db.insert(registrations)
       .values({
+        id: randomUUID(),
         ...insertRegistration,
         isVip: insertRegistration.isVip ?? false,
         phone: insertRegistration.phone ?? null
