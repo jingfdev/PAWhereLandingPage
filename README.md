@@ -44,15 +44,6 @@ npm install
 ### 3. Environment Setup
 Create a `.env` file in the root directory:
 ```env
-# Database Configuration (Optional - uses in-memory storage by default)
-DATABASE_URL=postgresql://pawhere:pawhere@localhost:5439/pawherelandingpage
-PGHOST=localhost
-PGPORT=5439
-PGDATABASE=pawherelandingpage
-PGUSER=pawhere
-PGPASSWORD=pawhere
-
-# Development Settings
 NODE_ENV=development
 PORT=3000
 ```
