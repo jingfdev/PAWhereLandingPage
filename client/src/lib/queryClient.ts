@@ -8,18 +8,19 @@ async function throwIfResNotOk(res: Response) {
 }
 
 function getApiUrl(path: string): string {
-  // If the URL is already absolute, use it as is
-  if (path.startsWith('http')) {
-    return path;
+  // Absolute URL passed through
+  if (path.startsWith("http")) return path;
+
+  // Ensure path starts with '/'
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+
+  // In development, allow overriding API base for local servers
+  if (import.meta.env.DEV && import.meta.env.VITE_API_BASE_URL) {
+    return `${import.meta.env.VITE_API_BASE_URL}${normalizedPath}`;
   }
-  
-  // Remove leading slash if present
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  
-  // Use VITE_API_BASE_URL if available, otherwise default to current origin
-  const baseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin;
-  
-  return `${baseUrl}/${cleanPath}`;
+
+  // In production, always use same-origin to avoid CORS/mixed-content issues
+  return normalizedPath;
 }
 
 export async function apiRequest(
