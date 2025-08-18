@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { storage } from "./storage";
-import { checkConnection, getDbInfo } from "./db";
+import { checkConnection, getDbInfo, ensureSchema } from "./db";
 import { insertRegistrationSchema } from "../shared/schema";
 import { z } from "zod";
 
@@ -9,6 +9,7 @@ export function registerRoutes(app: Express): void {
   // Registration endpoint (with and without /api prefix for Vercel rewrites)
   app.post("/api/register", async (req, res) => {
     try {
+      await ensureSchema();
       const registrationData = insertRegistrationSchema.parse(req.body);
       
       // Check if email already exists
@@ -45,6 +46,7 @@ export function registerRoutes(app: Express): void {
   });
   app.post("/register", async (req, res) => {
     try {
+      await ensureSchema();
       const registrationData = insertRegistrationSchema.parse(req.body);
       const existingRegistration = await storage.getRegistrationByEmail(registrationData.email);
       if (existingRegistration) {
