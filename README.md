@@ -2,7 +2,7 @@
 
 A modern, responsive React.js landing page for PAWhere - an innovative IoT pet tracking device. Features real-time GPS tracking demonstration, user registration system, product showcase, and team database management.
 
-![PAWhere Logo](./attached_assets/PAWhereLogo.png)
+![PAWhere Logo](./attached_assets/PAWhere_Logo.png)
 
 ## 🚀 Features
 
