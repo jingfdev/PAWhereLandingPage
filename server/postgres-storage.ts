@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db } from './db';
-import { users, registrations } from '@shared/schema';
+import { users, registrations } from '../shared/schema';
 import type { IStorage } from './storage-types';
 import type { User, InsertUser, Registration, InsertRegistration } from './storage-types.d';
 

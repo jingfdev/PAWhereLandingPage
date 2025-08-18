@@ -1,6 +1,6 @@
 import { db } from './db';
 import { sql } from 'drizzle-orm';
-import { users, registrations } from '@shared/schema';
+import { users, registrations } from '../shared/schema';
 
 async function runMigrations() {
   console.log('Running migrations...');

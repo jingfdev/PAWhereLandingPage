@@ -1,10 +1,10 @@
 import type { Express } from "express";
-import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertRegistrationSchema } from "@shared/schema";
+import { checkConnection } from "./db";
+import { insertRegistrationSchema } from "../shared/schema";
 import { z } from "zod";
 
-export async function registerRoutes(app: Express): Promise<Server> {
+export function registerRoutes(app: Express): void {
   
   // Registration endpoint
   app.post("/api/register", async (req, res) => {
@@ -57,6 +57,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  const httpServer = createServer(app);
-  return httpServer;
+  // Database health check
+  app.get("/api/health/db", async (_req, res) => {
+    const ok = await checkConnection();
+    res.status(ok ? 200 : 500).json({ ok });
+  });
 }

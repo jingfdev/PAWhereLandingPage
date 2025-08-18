@@ -5,6 +5,9 @@ async function runMigrations() {
   console.log('Running database migrations...');
 
   try {
+    // Ensure pgcrypto for gen_random_uuid
+    await db.execute(sql`CREATE EXTENSION IF NOT EXISTS pgcrypto;`);
+
     // Create users table
     await db.execute(sql`
       CREATE TABLE IF NOT EXISTS users (

@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Registration, type InsertRegistration } from "@shared/schema";
+import { type User, type InsertUser, type Registration, type InsertRegistration } from "../shared/schema";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;

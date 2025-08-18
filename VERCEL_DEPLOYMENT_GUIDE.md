@@ -31,38 +31,22 @@ Create a `vercel.json` file in your project root:
 {
   "version": 2,
   "builds": [
-    {
-      "src": "server/index.ts",
-      "use": "@vercel/node"
-    },
+    { "src": "api/index.ts", "use": "@vercel/node" },
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "config": { "distDir": "dist/public" }
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/server/index.ts"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/dist/$1"
-    }
-  ],
-  "functions": {
-    "server/index.ts": {
-      "includeFiles": "dist/**"
-    }
-  }
+    { "src": "/api/(.*)", "dest": "/api/index.ts" },
+    { "src": "/(.*)", "dest": "/dist/public/$1" }
+  ]
 }
 ```
 
 ### 1.3 Update Build Configuration
-Modify your `vite.config.ts` to ensure proper building:
+Vite is already configured to build into `dist/public`. No changes needed.
 
 ```typescript
 export default defineConfig({
@@ -91,15 +75,12 @@ postgresql://username:password@hostname/database?sslmode=require
 ```
 
 ### 2.3 Run Database Migrations
-Before deployment, ensure your database schema is ready:
+You can run migrations locally or via a Vercel one-off deployment:
 
 ```bash
-# Install dependencies
-npm install
-
-# Generate and run migrations
-npx drizzle-kit generate:pg
-npx drizzle-kit push:pg
+# Local (recommended first time)
+cp .env.example .env  # ensure DATABASE_URL is set
+npm run db:migrate
 ```
 
 ## Step 3: Push Code to GitHub
@@ -118,10 +99,10 @@ git clone https://github.com/jingfdev/PAWhereLandingPage.git
 4. Import your `pawhere-landing-page` repository
 
 ### 4.2 Configure Project Settings
-1. **Framework Preset**: Vite
-2. **Root Directory**: `./` (leave as default)
+1. **Framework Preset**: Other
+2. **Root Directory**: `./`
 3. **Build Command**: `npm run build`
-4. **Output Directory**: `dist`
+4. **Output Directory**: `dist/public`
 5. **Install Command**: `npm install`
 
 ### 4.3 Environment Variables
