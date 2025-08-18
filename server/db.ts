@@ -2,6 +2,7 @@ import { drizzle as drizzlePostgres } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import { drizzle as drizzleNeon } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
+import { sql } from 'drizzle-orm';
 import * as schema from '../shared/schema';
 import * as dotenv from 'dotenv';
 import path from 'path';
@@ -56,6 +57,32 @@ if (useNeonHttp) {
 
 export { db };
 
+// Ensure required extension and tables exist (idempotent)
+export async function ensureSchema() {
+  try {
+    await (db as any).execute?.(sql`CREATE EXTENSION IF NOT EXISTS pgcrypto;`);
+    await (db as any).execute?.(sql`
+      CREATE TABLE IF NOT EXISTS users (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        username TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      );
+    `);
+    await (db as any).execute?.(sql`
+      CREATE TABLE IF NOT EXISTS registrations (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        email TEXT NOT NULL UNIQUE,
+        phone TEXT,
+        is_vip BOOLEAN NOT NULL DEFAULT false,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      );
+    `);
+  } catch (error) {
+    console.error('Schema ensure error:', error);
+  }
+}
+
 // Test the connection when this module is imported
 checkConnection().then(connected => {
   if (connected) {
@@ -64,3 +91,6 @@ checkConnection().then(connected => {
     console.error('Failed to connect to the database');
   }
 });
+
+// Attempt to ensure schema at startup (safe if already exists)
+ensureSchema();
