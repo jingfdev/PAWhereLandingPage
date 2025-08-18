@@ -1,4 +1,3 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import express from 'express';
 import { registerRoutes } from '../server/routes';
 
@@ -8,10 +7,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 registerRoutes(app);
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
-  // Delegate to Express
-  // @ts-expect-error: express types vs vercel types mismatch is OK
-  return app(req, res);
+export default function handler(req: any, res: any) {
+  return (app as any)(req, res);
 }
 
 
