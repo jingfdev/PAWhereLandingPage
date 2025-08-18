@@ -54,7 +54,7 @@ PGPASSWORD=pawhere
 
 # Development Settings
 NODE_ENV=development
-PORT=5000
+PORT=3000
 ```
 
 ## 🚀 Quick Start

@@ -4,3 +4,8 @@ dist
 server/public
 vite.config.ts.*
 *.tar.gz
+attached_assets
+docker-compose.yml
+DATABASE_SETUP.md
+VERCEL_DEPLOYMENT_GUIDE.md
+.env
