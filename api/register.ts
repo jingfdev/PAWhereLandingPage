@@ -1,4 +1,3 @@
-import express from 'express';
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
 import { eq } from 'drizzle-orm';
@@ -7,7 +6,7 @@ import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { sql } from 'drizzle-orm';
 
-// Schema definitions (inline for Vercel)
+// Schema definitions
 const registrations = pgTable("registrations", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   email: text("email").notNull(),
@@ -49,13 +48,15 @@ async function ensureSchema() {
   }
 }
 
-// Create an Express app per invocation
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+export default async function handler(req: any, res: any) {
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    return res.status(405).json({ 
+      message: "Method not allowed",
+      error: "INVALID_METHOD"
+    });
+  }
 
-// Registration endpoint
-app.post("/api/register", async (req, res) => {
   try {
     console.log("Registration attempt:", req.body);
     await ensureSchema();
@@ -106,39 +107,4 @@ app.post("/api/register", async (req, res) => {
       error: error instanceof Error ? error.message : String(error)
     });
   }
-});
-
-// Health check endpoint
-app.get("/api/health", async (req, res) => {
-  try {
-    await neonClient`SELECT 1 as test`;
-    res.json({ status: "ok", database: "connected", timestamp: new Date().toISOString() });
-  } catch (error) {
-    console.error("Health check error:", error);
-    res.status(500).json({ status: "error", database: "disconnected" });
-  }
-});
-
-export default async function handler(req: any, res: any) {
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET');
-    return res.status(405).json({ 
-      message: "Method not allowed. Use /api/register for registration.",
-      endpoints: {
-        "GET /api/health": "Health check",
-        "POST /api/register": "User registration"
-      }
-    });
-  }
-
-  return res.status(200).json({ 
-    message: "PAWhere API is running",
-    endpoints: {
-      "GET /api/health": "Health check",
-      "POST /api/register": "User registration"
-    },
-    timestamp: new Date().toISOString()
-  });
 }
-
-
