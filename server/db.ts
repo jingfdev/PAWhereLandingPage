@@ -74,42 +74,46 @@ export function getDbInfo() {
 // Ensure required extension and tables exist (idempotent)
 export async function ensureSchema() {
   try {
+    console.log("Ensuring database schema...");
     if (useNeonHttp) {
       const client = neon(process.env.DATABASE_URL!, { fetchOptions: { cache: 'no-store' } });
       await client`CREATE TABLE IF NOT EXISTS users (
-        id UUID PRIMARY KEY,
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         username TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       )`;
       await client`CREATE TABLE IF NOT EXISTS registrations (
-        id UUID PRIMARY KEY,
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         email TEXT NOT NULL UNIQUE,
         phone TEXT,
         is_vip BOOLEAN NOT NULL DEFAULT false,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       )`;
+      console.log("Schema ensured successfully (neon-http)");
     } else {
       const client = postgres(process.env.DATABASE_URL!, {
         ssl: process.env.NODE_ENV === 'production' ? 'require' : false,
       });
       await client`CREATE TABLE IF NOT EXISTS users (
-        id UUID PRIMARY KEY,
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         username TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       )`;
       await client`CREATE TABLE IF NOT EXISTS registrations (
-        id UUID PRIMARY KEY,
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         email TEXT NOT NULL UNIQUE,
         phone TEXT,
         is_vip BOOLEAN NOT NULL DEFAULT false,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       )`;
       await client.end({ timeout: 1 });
+      console.log("Schema ensured successfully (postgres-js)");
     }
   } catch (error) {
     console.error('Schema ensure error:', error);
+    throw error;
   }
 }
 

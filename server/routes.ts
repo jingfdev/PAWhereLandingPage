@@ -9,6 +9,7 @@ export function registerRoutes(app: Express): void {
   // Registration endpoint (with and without /api prefix for Vercel rewrites)
   app.post("/api/register", async (req, res) => {
     try {
+      console.log("Registration attempt:", req.body);
       await ensureSchema();
       const registrationData = insertRegistrationSchema.parse(req.body);
       
@@ -22,6 +23,7 @@ export function registerRoutes(app: Express): void {
       }
 
       const registration = await storage.createRegistration(registrationData);
+      console.log("Registration successful:", registration);
       res.status(201).json({ 
         message: "Registration successful",
         registration: {
@@ -32,6 +34,7 @@ export function registerRoutes(app: Express): void {
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
+        console.error("Validation error:", error.errors);
         return res.status(400).json({
           message: "Invalid registration data",
           errors: error.errors
@@ -40,12 +43,14 @@ export function registerRoutes(app: Express): void {
       
       console.error("Registration error:", error);
       res.status(500).json({ 
-        message: "Internal server error" 
+        message: "Internal server error",
+        error: error instanceof Error ? error.message : String(error)
       });
     }
   });
   app.post("/register", async (req, res) => {
     try {
+      console.log("Registration attempt (no /api):", req.body);
       await ensureSchema();
       const registrationData = insertRegistrationSchema.parse(req.body);
       const existingRegistration = await storage.getRegistrationByEmail(registrationData.email);
@@ -56,6 +61,7 @@ export function registerRoutes(app: Express): void {
         });
       }
       const registration = await storage.createRegistration(registrationData);
+      console.log("Registration successful (no /api):", registration);
       res.status(201).json({ 
         message: "Registration successful",
         registration: {
@@ -66,13 +72,17 @@ export function registerRoutes(app: Express): void {
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
+        console.error("Validation error (no /api):", error.errors);
         return res.status(400).json({
           message: "Invalid registration data",
           errors: error.errors
         });
       }
-      console.error("Registration error:", error);
-      res.status(500).json({ message: "Internal server error" });
+      console.error("Registration error (no /api):", error);
+      res.status(500).json({ 
+        message: "Internal server error",
+        error: error instanceof Error ? error.message : String(error)
+      });
     }
   });
 

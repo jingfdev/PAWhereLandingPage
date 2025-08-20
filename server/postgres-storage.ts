@@ -27,21 +27,23 @@ export class PostgresStorage implements IStorage {
 
   async createUser(insertUser: InsertUser) {
     const [user] = await db.insert(users).values({
-      id: randomUUID(),
       ...insertUser,
     }).returning();
     return user;
   }
 
   async createRegistration(insertRegistration: InsertRegistration) {
+    console.log("Creating registration with data:", insertRegistration);
+    
     const [registration] = await db.insert(registrations)
       .values({
-        id: randomUUID(),
         ...insertRegistration,
         isVip: insertRegistration.isVip ?? false,
         phone: insertRegistration.phone ?? null
       })
       .returning();
+    
+    console.log("Database returned:", registration);
     
     // Ensure we return a properly typed Registration object
     return {
