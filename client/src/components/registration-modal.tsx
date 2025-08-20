@@ -65,7 +65,7 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
       form.reset();
       setOpen(false);
       if (onClose) onClose();
-      queryClient.invalidateQueries({ queryKey: ["/api/registrations"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/register"] });
     },
     onError: (error: any) => {
       const errorMessage = error.message || "Something went wrong. Please try again.";
