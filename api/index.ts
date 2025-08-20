@@ -112,7 +112,7 @@ app.post("/api/register", async (req, res) => {
 app.get("/api/health", async (req, res) => {
   try {
     await neonClient`SELECT 1 as test`;
-    res.json({ status: "ok", database: "connected" });
+    res.json({ status: "ok", database: "connected", timestamp: new Date().toISOString() });
   } catch (error) {
     console.error("Health check error:", error);
     res.status(500).json({ status: "error", database: "disconnected" });
