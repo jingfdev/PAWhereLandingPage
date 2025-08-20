@@ -9,3 +9,4 @@ docker-compose.yml
 DATABASE_SETUP.md
 VERCEL_DEPLOYMENT_GUIDE.md
 .env
+.vercel
