@@ -11,6 +11,29 @@ const toRegistration = (dbReg: any): Registration => ({
   email: dbReg.email,
   phone: dbReg.phone ?? null,
   isVip: dbReg.isVip ?? false,
+  
+  // Section 1: Background Information
+  ownsPet: dbReg.ownsPet ?? null,
+  petType: dbReg.petType ?? null,
+  petTypeOther: dbReg.petTypeOther ?? null,
+  outdoorFrequency: dbReg.outdoorFrequency ?? null,
+  hasLostPet: dbReg.hasLostPet ?? null,
+  howFoundPet: dbReg.howFoundPet ?? null,
+  
+  // Section 2: Current Solutions & Pain Points
+  usesTrackingSolution: dbReg.usesTrackingSolution ?? null,
+  trackingSolutionDetails: dbReg.trackingSolutionDetails ?? null,
+  safetyWorries: dbReg.safetyWorries ?? null,
+  safetyWorriesOther: dbReg.safetyWorriesOther ?? null,
+  currentSafetyMethods: dbReg.currentSafetyMethods ?? null,
+  
+  // Section 3: Expectations for PAWhere
+  importantFeatures: dbReg.importantFeatures ?? null,
+  expectedChallenges: dbReg.expectedChallenges ?? null,
+  expectedChallengesOther: dbReg.expectedChallengesOther ?? null,
+  usefulnessRating: dbReg.usefulnessRating ?? null,
+  wishFeature: dbReg.wishFeature ?? null,
+  
   createdAt: dbReg.createdAt ?? new Date()
 });
 
@@ -45,14 +68,8 @@ export class PostgresStorage implements IStorage {
     
     console.log("Database returned:", registration);
     
-    // Ensure we return a properly typed Registration object
-    return {
-      id: registration.id,
-      email: registration.email,
-      phone: registration.phone,
-      isVip: registration.isVip ?? false,
-      createdAt: registration.createdAt ?? new Date()
-    };
+    // Return properly typed Registration object with all survey fields
+    return toRegistration(registration);
   }
 
   async getRegistrations() {
