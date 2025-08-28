@@ -166,16 +166,6 @@ export default function Home() {
             isVip={true}
           />
         </div>
-
-        {/* Simple Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center z-20">
-          <div className="animate-bounce">
-            <div className="text-white text-2xl opacity-80 mb-1">↓</div>
-            <p className="text-white text-xs opacity-70 font-medium">
-              Scroll to discover
-            </p>
-          </div>
-        </div>
       </section>
 
       {/* Product Visual / Showcase */}
