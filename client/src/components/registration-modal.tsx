@@ -145,7 +145,7 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
                 <FormControl>
                   <Input
                     type="tel"
-                    placeholder="+1 (555) 123-4567"
+                    placeholder="(+855) 123-4567"
                     className="rounded-xl focus:ring-primary-yellow"
                     {...field}
                   />
