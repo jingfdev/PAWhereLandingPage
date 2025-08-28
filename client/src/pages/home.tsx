@@ -343,17 +343,15 @@ export default function Home() {
               </div>
               <div className="pt-8">
                 <p className="text-gray-700 text-lg leading-relaxed mb-6 italic">
-                  "PAWhere saved my sanity! Bella loves to explore, and now I
-                  can let her roam freely knowing exactly where she is. The app
-                  is so easy to use!"
+                  "PAWhere really saved my mind! My dog Bella loves running around and exploring everywhere, and now I can let her go free without worry because I always know where she is. The app is super simple to use, even for me!"
                 </p>
                 <div className="flex items-center space-x-4">
                   <div className="bg-primary-blue rounded-full w-12 h-12 flex items-center justify-center">
-                    <span className="text-white font-bold">SM</span>
+                    <span className="text-white font-bold">NM</span>
                   </div>
                   <div>
                     <h4 className="font-bold text-primary-blue">
-                      Sarah Martinez
+                      Narath Mom
                     </h4>
                     <p className="text-gray-500">Border Collie Mom</p>
                   </div>
@@ -368,17 +366,15 @@ export default function Home() {
               </div>
               <div className="pt-8">
                 <p className="text-gray-700 text-lg leading-relaxed mb-6 italic">
-                  "The safe zone feature is brilliant! I get alerts when Max
-                  leaves our yard, and the battery lasts for weeks. Highly
-                  recommend to all dog parents!"
+                  "The safe zone is so clever! I always get alert when my dog Max run out from our yard, and the battery can last many weeks without charge. I recommend it a lot to everyone who love dogs!"
                 </p>
                 <div className="flex items-center space-x-4">
                   <div className="bg-primary-blue rounded-full w-12 h-12 flex items-center justify-center">
-                    <span className="text-white font-bold">DJ</span>
+                    <span className="text-white font-bold">NV</span>
                   </div>
                   <div>
                     <h4 className="font-bold text-primary-blue">
-                      David Johnson
+                      Narith Vann
                     </h4>
                     <p className="text-gray-500">Golden Retriever Dad</p>
                   </div>
@@ -393,17 +389,15 @@ export default function Home() {
               </div>
               <div className="pt-8">
                 <p className="text-gray-700 text-lg leading-relaxed mb-6 italic">
-                  "Luna is an escape artist, but PAWhere helps me find her
-                  quickly every time. The real-time tracking is incredibly
-                  accurate. Game changer!"
+                  "My Luna is escape artist, always try to run away, but PAWhere help me find her very quick every time. The real-time tracking so accurate, no mistake. It really change my life!"
                 </p>
                 <div className="flex items-center space-x-4">
                   <div className="bg-primary-blue rounded-full w-12 h-12 flex items-center justify-center">
-                    <span className="text-white font-bold">ER</span>
+                    <span className="text-white font-bold">NS</span>
                   </div>
                   <div>
                     <h4 className="font-bold text-primary-blue">
-                      Emily Rodriguez
+                      Nary Sokna
                     </h4>
                     <p className="text-gray-500">Husky Mom</p>
                   </div>
@@ -418,7 +412,7 @@ export default function Home() {
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
                 <div className="text-center">
                   <div className="text-4xl font-bold text-primary-blue mb-2">
-                    10,000+
+                    100+
                   </div>
                   <p className="text-gray-600">Happy Pet Parents</p>
                 </div>
