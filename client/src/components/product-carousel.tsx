@@ -4,6 +4,8 @@ import photo1 from "@assets/photo1_1755183836564.png";
 import photo2 from "@assets/photo2_1755183836565.png";
 import photo3 from "@assets/photo3_1755183836563.png";
 import featureImage from "@assets/feature_1755184028301.png";
+import sample1 from "@assets/sample1.png";
+import sample2 from "@assets/sample2.png";
 
 const products = [
   {
@@ -46,7 +48,9 @@ export function ProductCarousel() {
   const featureProduct = products.find(p => p.isFeature);
 
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    if (!isAutoPlaying) {
+      return;
+    }
 
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselProducts.length);
@@ -77,97 +81,123 @@ export function ProductCarousel() {
 
   return (
     <div className="relative">
-      {/* Product Carousel Display */}
-      <div className="relative bg-gradient-to-br from-white to-gray-50 rounded-3xl p-12 shadow-2xl max-w-6xl mx-auto overflow-hidden border border-gray-100 mb-20">
-        <div 
-          className="flex transition-transform duration-700 ease-in-out"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-        >
-          {carouselProducts.map((product) => (
-            <div key={product.id} className="w-full flex-shrink-0">
-              <div className={`${product.bgColor} rounded-2xl p-12 text-center relative`}>
-                {/* Decorative elements */}
-                <div className="absolute top-6 right-6 w-8 h-8 bg-primary-yellow/20 rounded-full animate-pulse"></div>
-                <div className="absolute bottom-6 left-6 w-6 h-6 bg-primary-blue/20 rounded-full animate-pulse delay-1000"></div>
-                
-                <img
-                  src={product.image}
-                  alt={`PAWhere ${product.title}`}
-                  className="w-full max-w-md mx-auto h-96 object-contain rounded-2xl mb-8 transform hover:scale-105 transition-transform duration-300"
-                />
-                <div className="space-y-4">
-                  <h4 className="text-3xl font-bold text-primary-blue">
-                    {product.title}
-                  </h4>
-                  <p className="text-gray-600 text-xl max-w-2xl mx-auto leading-relaxed">
-                    {product.description}
-                  </p>
-                </div>
+      {/* Main Product Showcase - Side by Side Layout */}
+      <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start mb-20">
+        
+        {/* Left Side - Product Sample Images (Dogs Using PAWhere) */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="text-center lg:text-left">
+            <div className="inline-block bg-primary-yellow/20 rounded-full px-4 py-2 mb-3">
+              <span className="text-primary-blue font-semibold text-sm">
+                Real Dogs, Real Stories
+              </span>
+            </div>
+            <h3 className="text-2xl lg:text-3xl font-bold text-primary-blue mb-6">
+              See PAWhere in Action
+            </h3>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="relative group overflow-hidden rounded-xl shadow-lg">
+              <img
+                src={sample1}
+                alt="Dog wearing PAWhere GPS tracker in outdoor setting"
+                className="w-full h-72 sm:h-80 object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute bottom-3 left-3 right-3 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p className="text-sm font-medium">Adventure Ready</p>
+                <p className="text-xs opacity-90">Explore with confidence</p>
               </div>
             </div>
-          ))}
+            
+            <div className="relative group overflow-hidden rounded-xl shadow-lg">
+              <img
+                src={sample2}
+                alt="Happy dog with PAWhere GPS collar in safe environment"
+                className="w-full h-72 sm:h-80 object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute bottom-3 left-3 right-3 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p className="text-sm font-medium">Always Protected</p>
+                <p className="text-xs opacity-90">Peace of mind for pet parents</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Navigation Arrows */}
-        <Button
-          onClick={goToPrevious}
-          variant="outline"
-          size="icon"
-          className="absolute left-6 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm shadow-xl rounded-full w-16 h-16 hover:bg-primary-yellow hover:text-white transition-all duration-300 border-2 border-gray-200 hover:border-primary-yellow"
-        >
-          <span className="text-2xl">←</span>
-        </Button>
-        
-        <Button
-          onClick={goToNext}
-          variant="outline"
-          size="icon"
-          className="absolute right-6 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm shadow-xl rounded-full w-16 h-16 hover:bg-primary-yellow hover:text-white transition-all duration-300 border-2 border-gray-200 hover:border-primary-yellow"
-        >
-          <span className="text-2xl">→</span>
-        </Button>
-      </div>
+        {/* Right Side - Product Carousel */}
+        <div className="lg:col-span-3 relative">
+          <div className="relative bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 lg:p-8 shadow-xl overflow-hidden border border-gray-100">
+            <div 
+              className="flex transition-transform duration-700 ease-in-out"
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            >
+              {carouselProducts.map((product) => (
+                <div key={product.id} className="w-full flex-shrink-0">
+                  <div className={`${product.bgColor} rounded-xl p-4 lg:p-6 text-center relative`}>
+                    {/* Decorative elements */}
+                    <div className="absolute top-3 right-3 w-4 h-4 bg-primary-yellow/20 rounded-full animate-pulse"></div>
+                    <div className="absolute bottom-3 left-3 w-3 h-3 bg-primary-blue/20 rounded-full animate-pulse delay-1000"></div>
+                    
+                    <img
+                      src={product.image}
+                      alt={`PAWhere ${product.title}`}
+                      className="w-full max-w-xs mx-auto h-56 lg:h-64 object-contain rounded-xl mb-4 transform hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="space-y-2">
+                      <h4 className="text-xl lg:text-2xl font-bold text-primary-blue">
+                        {product.title}
+                      </h4>
+                      <p className="text-gray-600 text-sm lg:text-base leading-relaxed">
+                        {product.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-      {/* Dots Indicator */}
-      <div className="flex justify-center mb-16 space-x-3">
-        {carouselProducts.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-4 h-4 rounded-full transition-all duration-300 ${
-              index === currentIndex
-                ? "bg-primary-yellow scale-125 shadow-lg"
-                : "bg-gray-300 hover:bg-gray-400 hover:scale-110"
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
-      </div>
+            {/* Navigation Arrows */}
+            <Button
+              onClick={goToPrevious}
+              variant="outline"
+              size="icon"
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm shadow-lg rounded-full w-10 h-10 lg:w-12 lg:h-12 hover:bg-primary-yellow hover:text-white transition-all duration-300 border border-gray-200 hover:border-primary-yellow"
+            >
+              <span className="text-lg lg:text-xl">←</span>
+            </Button>
+            
+            <Button
+              onClick={goToNext}
+              variant="outline"
+              size="icon"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm shadow-lg rounded-full w-10 h-10 lg:w-12 lg:h-12 hover:bg-primary-yellow hover:text-white transition-all duration-300 border border-gray-200 hover:border-primary-yellow"
+            >
+              <span className="text-lg lg:text-xl">→</span>
+            </Button>
+          </div>
 
-      {/* Thumbnail Strip */}
-      <div className="flex justify-center mb-20 space-x-6 overflow-x-auto pb-4">
-        {carouselProducts.map((product, index) => (
-          <button
-            key={product.id}
-            onClick={() => goToSlide(index)}
-            className={`flex-shrink-0 w-24 h-24 rounded-2xl overflow-hidden border-3 transition-all duration-300 ${
-              index === currentIndex
-                ? "border-primary-yellow shadow-xl scale-110"
-                : "border-gray-200 hover:border-gray-300 hover:scale-105"
-            }`}
-          >
-            <img
-              src={product.image}
-              alt={`${product.title} thumbnail`}
-              className="w-full h-full object-cover"
-            />
-          </button>
-        ))}
+          {/* Dots Indicator */}
+          <div className="flex justify-center mt-4 space-x-2">
+            {carouselProducts.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`w-2 h-2 lg:w-3 lg:h-3 rounded-full transition-all duration-300 ${
+                  index === currentIndex
+                    ? "bg-primary-yellow scale-125 shadow-md"
+                    : "bg-gray-300 hover:bg-gray-400 hover:scale-110"
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
-
-      {/* Feature Image Display - Under Product Images */}
+      {/* Feature Image Display - Advanced Features */}
       {featureProduct && (
-        <div className="mb-16">
+        <div className="mt-20">
           <div className="text-center mb-12">
             <div className="inline-block bg-primary-blue/10 rounded-full px-8 py-3 mb-6">
               <span className="text-primary-blue font-bold text-lg">Advanced Features</span>
