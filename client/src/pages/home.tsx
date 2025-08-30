@@ -218,18 +218,63 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-            {/* Mobile App Mockup */}
+          {/* Mobile Layout - Two Phone Screens */}
+          <div className="lg:hidden mb-12">
+            <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
+              {/* First Phone Screen */}
+              <div className="relative">
+                <div className="absolute -inset-2 bg-gradient-to-r from-primary-yellow to-primary-blue rounded-full opacity-20 blur-lg animate-pulse"></div>
+                <div className="relative bg-gray-900 rounded-[1.5rem] p-1.5 shadow-xl">
+                  <div className="bg-black rounded-[1rem] p-1">
+                    <div className="relative rounded-[0.75rem] overflow-hidden bg-white">
+                      <img
+                        src={mobileTrackingImage}
+                        alt="PAWhere mobile app - Part 1"
+                        className="w-full h-auto object-cover object-top"
+                        style={{ aspectRatio: "9/19.5", objectPosition: "top" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="absolute top-0.5 left-1/2 transform -translate-x-1/2 w-12 h-3 bg-black rounded-full"></div>
+                </div>
+              </div>
+
+              {/* Second Phone Screen */}
+              <div className="relative">
+                <div className="absolute -inset-2 bg-gradient-to-r from-primary-blue to-primary-yellow rounded-full opacity-20 blur-lg animate-pulse delay-500"></div>
+                <div className="relative bg-gray-900 rounded-[1.5rem] p-1.5 shadow-xl">
+                  <div className="bg-black rounded-[1rem] p-1">
+                    <div className="relative rounded-[0.75rem] overflow-hidden bg-white">
+                      <img
+                        src={mobileTrackingImage}
+                        alt="PAWhere mobile app - Part 2"
+                        className="w-full h-auto object-cover object-bottom"
+                        style={{ aspectRatio: "9/19.5", objectPosition: "bottom" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="absolute top-0.5 left-1/2 transform -translate-x-1/2 w-12 h-3 bg-black rounded-full"></div>
+                </div>
+              </div>
+            </div>
+            <p className="text-center text-gray-500 mt-4 text-sm">
+              Swipe through our intuitive mobile app interface
+            </p>
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="hidden lg:grid lg:grid-cols-2 gap-16 items-center">
+            {/* Mobile App Mockup - Desktop Only */}
             <div className="text-center lg:text-left order-2 lg:order-1">
               <div className="relative inline-block">
-                <div className="absolute -inset-4 lg:-inset-6 bg-gradient-to-r from-primary-yellow to-primary-blue rounded-full opacity-20 blur-xl animate-pulse"></div>
+                <div className="absolute -inset-6 bg-gradient-to-r from-primary-yellow to-primary-blue rounded-full opacity-20 blur-xl animate-pulse"></div>
 
-                {/* Phone Frame - Responsive sizing */}
-                <div className="relative bg-gray-900 rounded-[2rem] lg:rounded-[2.5rem] p-2 lg:p-3 shadow-2xl transform hover:scale-105 transition-transform duration-500 w-48 sm:w-56 lg:max-w-sm mx-auto">
+                {/* Phone Frame - Desktop sizing */}
+                <div className="relative bg-gray-900 rounded-[2.5rem] p-3 shadow-2xl transform hover:scale-105 transition-transform duration-500 max-w-sm mx-auto">
                   {/* Phone Screen Bezel */}
-                  <div className="bg-black rounded-[1.5rem] lg:rounded-[2rem] p-1 lg:p-2">
+                  <div className="bg-black rounded-[2rem] p-2">
                     {/* App Content - Full Screen */}
-                    <div className="relative rounded-[1rem] lg:rounded-[1.5rem] overflow-hidden bg-white">
+                    <div className="relative rounded-[1.5rem] overflow-hidden bg-white">
                       <img
                         src={mobileTrackingImage}
                         alt="PAWhere mobile app showing real-time pet tracking on map with Bella the Border Collie"
@@ -239,30 +284,69 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Phone Hardware Details - Responsive */}
-                  <div className="absolute left-0 top-12 lg:top-20 w-0.5 lg:w-1 h-6 lg:h-8 bg-gray-700 rounded-l-md"></div>
-                  <div className="absolute left-0 top-20 lg:top-32 w-0.5 lg:w-1 h-8 lg:h-12 bg-gray-700 rounded-l-md"></div>
-                  <div className="absolute left-0 top-32 lg:top-48 w-0.5 lg:w-1 h-8 lg:h-12 bg-gray-700 rounded-l-md"></div>
-                  <div className="absolute right-0 top-16 lg:top-28 w-0.5 lg:w-1 h-10 lg:h-16 bg-gray-700 rounded-r-md"></div>
+                  {/* Phone Hardware Details */}
+                  <div className="absolute left-0 top-20 w-1 h-8 bg-gray-700 rounded-l-md"></div>
+                  <div className="absolute left-0 top-32 w-1 h-12 bg-gray-700 rounded-l-md"></div>
+                  <div className="absolute left-0 top-48 w-1 h-12 bg-gray-700 rounded-l-md"></div>
+                  <div className="absolute right-0 top-28 w-1 h-16 bg-gray-700 rounded-r-md"></div>
 
-                  {/* Camera Notch - Responsive */}
-                  <div className="absolute top-0.5 lg:top-1 left-1/2 transform -translate-x-1/2 w-16 lg:w-24 h-4 lg:h-6 bg-black rounded-full"></div>
+                  {/* Camera Notch */}
+                  <div className="absolute top-1 left-1/2 transform -translate-x-1/2 w-24 h-6 bg-black rounded-full"></div>
                 </div>
               </div>
             </div>
 
-            {/* App Features */}
-            <div className="space-y-6 lg:space-y-8 order-1 lg:order-2">
-              <div className="bg-white rounded-xl lg:rounded-2xl p-6 lg:p-8 shadow-xl border border-gray-100 transform hover:scale-105 transition-all duration-300">
-                <div className="flex items-start space-x-3 lg:space-x-4">
-                  <div className="bg-primary-yellow rounded-full p-2 lg:p-3 flex-shrink-0">
-                    <span className="text-xl lg:text-2xl">🗺️</span>
+            {/* App Features - Mobile */}
+            <div className="lg:hidden space-y-4 mb-8">
+              <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                <div className="flex items-center space-x-3">
+                  <div className="bg-primary-yellow rounded-full p-2 flex-shrink-0">
+                    <span className="text-lg">🗺️</span>
                   </div>
                   <div>
-                    <h3 className="text-xl lg:text-2xl font-bold text-primary-blue mb-2">
+                    <h3 className="text-lg font-bold text-primary-blue">Real-Time Location</h3>
+                    <p className="text-gray-600 text-sm">Precise GPS tracking and live map updates</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                <div className="flex items-center space-x-3">
+                  <div className="bg-primary-blue rounded-full p-2 flex-shrink-0">
+                    <span className="text-lg">🛡️</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-primary-blue">Safe Zone Alerts</h3>
+                    <p className="text-gray-600 text-sm">Virtual boundaries with instant notifications</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                <div className="flex items-center space-x-3">
+                  <div className="bg-primary-yellow rounded-full p-2 flex-shrink-0">
+                    <span className="text-lg">📱</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-primary-blue">Instant Notifications</h3>
+                    <p className="text-gray-600 text-sm">Real-time alerts about location and activity</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* App Features - Desktop */}
+            <div className="hidden lg:block space-y-8 order-1 lg:order-2">
+              <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 transform hover:scale-105 transition-all duration-300">
+                <div className="flex items-start space-x-4">
+                  <div className="bg-primary-yellow rounded-full p-3 flex-shrink-0">
+                    <span className="text-2xl">🗺️</span>
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-primary-blue mb-2">
                       Real-Time Location
                     </h3>
-                    <p className="text-gray-600 text-base lg:text-lg leading-relaxed">
+                    <p className="text-gray-600 text-lg leading-relaxed">
                       See exactly where your pet is at any moment with precise
                       GPS tracking and live map updates.
                     </p>
@@ -270,16 +354,16 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl lg:rounded-2xl p-6 lg:p-8 shadow-xl border border-gray-100 transform hover:scale-105 transition-all duration-300">
-                <div className="flex items-start space-x-3 lg:space-x-4">
-                  <div className="bg-primary-blue rounded-full p-2 lg:p-3 flex-shrink-0">
-                    <span className="text-xl lg:text-2xl">🛡️</span>
+              <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 transform hover:scale-105 transition-all duration-300">
+                <div className="flex items-start space-x-4">
+                  <div className="bg-primary-blue rounded-full p-3 flex-shrink-0">
+                    <span className="text-2xl">🛡️</span>
                   </div>
                   <div>
-                    <h3 className="text-xl lg:text-2xl font-bold text-primary-blue mb-2">
+                    <h3 className="text-2xl font-bold text-primary-blue mb-2">
                       Safe Zone Alerts
                     </h3>
-                    <p className="text-gray-600 text-base lg:text-lg leading-relaxed">
+                    <p className="text-gray-600 text-lg leading-relaxed">
                       Set up virtual boundaries and get instant notifications
                       when your pet enters or leaves safe areas.
                     </p>
@@ -287,16 +371,16 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-xl lg:rounded-2xl p-6 lg:p-8 shadow-xl border border-gray-100 transform hover:scale-105 transition-all duration-300">
-                <div className="flex items-start space-x-3 lg:space-x-4">
-                  <div className="bg-primary-yellow rounded-full p-2 lg:p-3 flex-shrink-0">
-                    <span className="text-xl lg:text-2xl">📱</span>
+              <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 transform hover:scale-105 transition-all duration-300">
+                <div className="flex items-start space-x-4">
+                  <div className="bg-primary-yellow rounded-full p-3 flex-shrink-0">
+                    <span className="text-2xl">📱</span>
                   </div>
                   <div>
-                    <h3 className="text-xl lg:text-2xl font-bold text-primary-blue mb-2">
+                    <h3 className="text-2xl font-bold text-primary-blue mb-2">
                       Instant Notifications
                     </h3>
-                    <p className="text-gray-600 text-base lg:text-lg leading-relaxed">
+                    <p className="text-gray-600 text-lg leading-relaxed">
                       Receive real-time alerts on your phone about your pet's
                       location, battery status, and activity.
                     </p>
