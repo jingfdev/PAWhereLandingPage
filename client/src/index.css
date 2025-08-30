@@ -52,7 +52,7 @@
   --spacing: 0.25rem;
   
   /* PAWhere Brand Colors */
-  --primary-yellow: hsl(42, 93%, 50%);
+  --primary-yellow: hsl(42, 95%, 49%); /* #f4a905 */
   --primary-blue: hsl(217, 82%, 33%);
   --brand-black: hsl(0, 0%, 0%);
   --brand-white: hsl(0, 0%, 100%);
