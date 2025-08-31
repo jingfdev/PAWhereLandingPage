@@ -194,7 +194,7 @@ export default function Home() {
       </section>
 
       {/* Mobile App Showcase */}
-      <section id="tracking" className="py-24 bg-gradient-to-br from-primary-blue/5 via-white to-primary-yellow/5 relative overflow-hidden">
+      <section id="tracking" className="py-16 lg:py-24 bg-gradient-to-br from-primary-blue/5 via-white to-primary-yellow/5 relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-20 text-6xl">📱</div>
@@ -203,28 +203,73 @@ export default function Home() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-20">
-            <div className="inline-block bg-primary-blue/10 rounded-full px-8 py-3 mb-6">
-              <span className="text-primary-blue font-bold text-lg">
+          <div className="text-center mb-12 lg:mb-20">
+            <div className="inline-block bg-primary-blue/10 rounded-full px-6 lg:px-8 py-2 lg:py-3 mb-4 lg:mb-6">
+              <span className="text-primary-blue font-bold text-base lg:text-lg">
                 Live Tracking
               </span>
             </div>
-            <h2 className="text-5xl sm:text-6xl font-bold text-primary-blue mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-primary-blue mb-4 lg:mb-6 leading-tight px-4">
               Track Your Pet in Real-Time
             </h2>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed px-4">
               Monitor your furry friend's location, set safe zones, and get
               instant alerts through our intuitive mobile app
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Mobile App Mockup */}
-            <div className="text-center lg:text-left">
+          {/* Mobile Layout - Two Phone Screens */}
+          <div className="lg:hidden mb-12">
+            <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
+              {/* First Phone Screen */}
+              <div className="relative">
+                <div className="absolute -inset-2 bg-gradient-to-r from-primary-yellow to-primary-blue rounded-full opacity-20 blur-lg animate-pulse"></div>
+                <div className="relative bg-gray-900 rounded-[1.5rem] p-1.5 shadow-xl">
+                  <div className="bg-black rounded-[1rem] p-1">
+                    <div className="relative rounded-[0.75rem] overflow-hidden bg-white">
+                      <img
+                        src={mobileTrackingImage}
+                        alt="PAWhere mobile app - Part 1"
+                        className="w-full h-auto object-cover object-top"
+                        style={{ aspectRatio: "9/19.5", objectPosition: "top" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="absolute top-0.5 left-1/2 transform -translate-x-1/2 w-12 h-3 bg-black rounded-full"></div>
+                </div>
+              </div>
+
+              {/* Second Phone Screen */}
+              <div className="relative">
+                <div className="absolute -inset-2 bg-gradient-to-r from-primary-blue to-primary-yellow rounded-full opacity-20 blur-lg animate-pulse delay-500"></div>
+                <div className="relative bg-gray-900 rounded-[1.5rem] p-1.5 shadow-xl">
+                  <div className="bg-black rounded-[1rem] p-1">
+                    <div className="relative rounded-[0.75rem] overflow-hidden bg-white">
+                      <img
+                        src={mobileTrackingImage}
+                        alt="PAWhere mobile app - Part 2"
+                        className="w-full h-auto object-cover object-bottom"
+                        style={{ aspectRatio: "9/19.5", objectPosition: "bottom" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="absolute top-0.5 left-1/2 transform -translate-x-1/2 w-12 h-3 bg-black rounded-full"></div>
+                </div>
+              </div>
+            </div>
+            <p className="text-center text-gray-500 mt-4 text-sm">
+              Swipe through our intuitive mobile app interface
+            </p>
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="hidden lg:grid lg:grid-cols-2 gap-16 items-center">
+            {/* Mobile App Mockup - Desktop Only */}
+            <div className="text-center lg:text-left order-2 lg:order-1">
               <div className="relative inline-block">
                 <div className="absolute -inset-6 bg-gradient-to-r from-primary-yellow to-primary-blue rounded-full opacity-20 blur-xl animate-pulse"></div>
 
-                {/* Phone Frame */}
+                {/* Phone Frame - Desktop sizing */}
                 <div className="relative bg-gray-900 rounded-[2.5rem] p-3 shadow-2xl transform hover:scale-105 transition-transform duration-500 max-w-sm mx-auto">
                   {/* Phone Screen Bezel */}
                   <div className="bg-black rounded-[2rem] p-2">
@@ -233,7 +278,7 @@ export default function Home() {
                       <img
                         src={mobileTrackingImage}
                         alt="PAWhere mobile app showing real-time pet tracking on map with Bella the Border Collie"
-                        className="w-full h-auto max-w-none object-cover"
+                        className="w-full h-auto object-cover"
                         style={{ aspectRatio: "9/19.5" }}
                       />
                     </div>
@@ -251,8 +296,47 @@ export default function Home() {
               </div>
             </div>
 
-            {/* App Features */}
-            <div className="space-y-8">
+            {/* App Features - Mobile */}
+            <div className="lg:hidden space-y-4 mb-8">
+              <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                <div className="flex items-center space-x-3">
+                  <div className="bg-primary-yellow rounded-full p-2 flex-shrink-0">
+                    <span className="text-lg">🗺️</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-primary-blue">Real-Time Location</h3>
+                    <p className="text-gray-600 text-sm">Precise GPS tracking and live map updates</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                <div className="flex items-center space-x-3">
+                  <div className="bg-primary-blue rounded-full p-2 flex-shrink-0">
+                    <span className="text-lg">🛡️</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-primary-blue">Safe Zone Alerts</h3>
+                    <p className="text-gray-600 text-sm">Virtual boundaries with instant notifications</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                <div className="flex items-center space-x-3">
+                  <div className="bg-primary-yellow rounded-full p-2 flex-shrink-0">
+                    <span className="text-lg">📱</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-primary-blue">Instant Notifications</h3>
+                    <p className="text-gray-600 text-sm">Real-time alerts about location and activity</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* App Features - Desktop */}
+            <div className="hidden lg:block space-y-8 order-1 lg:order-2">
               <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 transform hover:scale-105 transition-all duration-300">
                 <div className="flex items-start space-x-4">
                   <div className="bg-primary-yellow rounded-full p-3 flex-shrink-0">
