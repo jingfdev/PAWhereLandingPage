@@ -218,48 +218,74 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Mobile Layout - Two Phone Screens */}
+          {/* Mobile Layout - Side by Side */}
           <div className="lg:hidden mb-12">
-            <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
-              {/* First Phone Screen */}
-              <div className="relative">
-                <div className="absolute -inset-2 bg-gradient-to-r from-primary-yellow to-primary-blue rounded-full opacity-20 blur-lg animate-pulse"></div>
-                <div className="relative bg-gray-900 rounded-[1.5rem] p-1.5 shadow-xl">
-                  <div className="bg-black rounded-[1rem] p-1">
-                    <div className="relative rounded-[0.75rem] overflow-hidden bg-white">
-                      <img
-                        src={mobileTrackingImage}
-                        alt="PAWhere mobile app - Part 1"
-                        className="w-full h-auto object-cover object-top"
-                        style={{ aspectRatio: "9/19.5", objectPosition: "top" }}
-                      />
+            <div className="grid grid-cols-5 gap-4 items-center">
+              {/* Left Side - Mobile Phone Mockup */}
+              <div className="col-span-2">
+                <div className="relative">
+                  <div className="absolute -inset-2 bg-gradient-to-r from-primary-yellow to-primary-blue rounded-full opacity-20 blur-lg animate-pulse"></div>
+                  <div className="relative bg-gray-900 rounded-[1.5rem] p-1.5 shadow-xl">
+                    <div className="bg-black rounded-[1rem] p-1">
+                      <div className="relative rounded-[0.75rem] overflow-hidden bg-white">
+                        <img
+                          src={mobileTrackingImage}
+                          alt="PAWhere mobile app showing real-time pet tracking"
+                          className="w-full h-auto object-cover"
+                          style={{ aspectRatio: "9/19.5" }}
+                        />
+                      </div>
                     </div>
+                    {/* Phone Hardware Details */}
+                    <div className="absolute left-0 top-12 w-0.5 h-4 bg-gray-700 rounded-l-sm"></div>
+                    <div className="absolute left-0 top-18 w-0.5 h-6 bg-gray-700 rounded-l-sm"></div>
+                    <div className="absolute left-0 top-26 w-0.5 h-6 bg-gray-700 rounded-l-sm"></div>
+                    <div className="absolute right-0 top-16 w-0.5 h-8 bg-gray-700 rounded-r-sm"></div>
+                    {/* Camera Notch */}
+                    <div className="absolute top-0.5 left-1/2 transform -translate-x-1/2 w-10 h-2.5 bg-black rounded-full"></div>
                   </div>
-                  <div className="absolute top-0.5 left-1/2 transform -translate-x-1/2 w-12 h-3 bg-black rounded-full"></div>
                 </div>
               </div>
 
-              {/* Second Phone Screen */}
-              <div className="relative">
-                <div className="absolute -inset-2 bg-gradient-to-r from-primary-blue to-primary-yellow rounded-full opacity-20 blur-lg animate-pulse delay-500"></div>
-                <div className="relative bg-gray-900 rounded-[1.5rem] p-1.5 shadow-xl">
-                  <div className="bg-black rounded-[1rem] p-1">
-                    <div className="relative rounded-[0.75rem] overflow-hidden bg-white">
-                      <img
-                        src={mobileTrackingImage}
-                        alt="PAWhere mobile app - Part 2"
-                        className="w-full h-auto object-cover object-bottom"
-                        style={{ aspectRatio: "9/19.5", objectPosition: "bottom" }}
-                      />
+              {/* Right Side - App Features */}
+              <div className="col-span-3 space-y-4">
+                <div className="bg-white rounded-xl p-3 shadow-lg border border-gray-100">
+                  <div className="flex items-start space-x-2">
+                    <div className="bg-primary-yellow rounded-full p-1.5 flex-shrink-0">
+                      <span className="text-sm">🗺️</span>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-primary-blue">Real-Time Location</h3>
+                      <p className="text-gray-600 text-xs leading-relaxed">See exactly where your pet is at any moment with precise GPS tracking and live map updates.</p>
                     </div>
                   </div>
-                  <div className="absolute top-0.5 left-1/2 transform -translate-x-1/2 w-12 h-3 bg-black rounded-full"></div>
+                </div>
+
+                <div className="bg-white rounded-xl p-3 shadow-lg border border-gray-100">
+                  <div className="flex items-start space-x-2">
+                    <div className="bg-primary-blue rounded-full p-1.5 flex-shrink-0">
+                      <span className="text-sm">🛡️</span>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-primary-blue">Safe Zone Alerts</h3>
+                      <p className="text-gray-600 text-xs leading-relaxed">Set up virtual boundaries and get instant notifications when your pet enters or leaves safe areas.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-xl p-3 shadow-lg border border-gray-100">
+                  <div className="flex items-start space-x-2">
+                    <div className="bg-primary-yellow rounded-full p-1.5 flex-shrink-0">
+                      <span className="text-sm">📱</span>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-primary-blue">Instant Notifications</h3>
+                      <p className="text-gray-600 text-xs leading-relaxed">Receive real-time alerts on your phone about your pet's location, battery status, and activity.</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <p className="text-center text-gray-500 mt-4 text-sm">
-              Swipe through our intuitive mobile app interface
-            </p>
           </div>
 
           {/* Desktop Layout */}
