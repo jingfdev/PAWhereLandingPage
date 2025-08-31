@@ -821,7 +821,7 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
                   <div>
                     <p className="font-medium">Device Shipping</p>
                     <p className="text-sm text-gray-600">
-                      Your PAWhere device will be shipped to you within 3-5 business days.
+                      You will be informed if you are selected to be our first tester.
                     </p>
                   </div>
                 </div>
