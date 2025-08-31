@@ -102,7 +102,7 @@ export function ProductCarousel() {
               <img
                 src={sample1}
                 alt="Dog wearing PAWhere GPS tracker in outdoor setting"
-                className="w-full h-72 sm:h-80 object-cover transition-transform duration-300 group-hover:scale-105"
+                className="w-full h-72 sm:h-80 object-contain bg-gradient-to-br from-amber-50 to-orange-50 transition-transform duration-300 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="absolute bottom-3 left-3 right-3 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -115,7 +115,7 @@ export function ProductCarousel() {
               <img
                 src={sample2}
                 alt="Happy dog with PAWhere GPS collar in safe environment"
-                className="w-full h-72 sm:h-80 object-cover transition-transform duration-300 group-hover:scale-105"
+                className="w-full h-72 sm:h-80 object-contain bg-gradient-to-br from-amber-50 to-orange-50 transition-transform duration-300 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="absolute bottom-3 left-3 right-3 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
