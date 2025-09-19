@@ -1,28 +1,11 @@
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
 import { eq } from 'drizzle-orm';
-import { pgTable, text, varchar, boolean, timestamp } from 'drizzle-orm/pg-core';
-import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
-import { sql } from 'drizzle-orm';
-
-// Schema definitions
-const registrations = pgTable("registrations", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  email: text("email").notNull(),
-  phone: text("phone"),
-  isVip: boolean("is_vip").default(false),
-  createdAt: timestamp("created_at").defaultNow(),
-});
-
-const insertRegistrationSchema = createInsertSchema(registrations).pick({
-  email: true,
-  phone: true,
-  isVip: true,
-});
+import { registrations } from '../shared/schema';
 
 // Database setup
-const DATABASE_URL = process.env.DATABASE_URL;
+const { DATABASE_URL } = process.env;
 if (!DATABASE_URL) {
   throw new Error('DATABASE_URL is not set in environment variables');
 }
@@ -30,7 +13,7 @@ if (!DATABASE_URL) {
 const neonClient = neon(DATABASE_URL, { fetchOptions: { cache: 'no-store' } });
 const db = drizzle(neonClient);
 
-// Ensure schema exists
+// Ensure schema exists with all survey fields
 async function ensureSchema() {
   try {
     console.log("Ensuring database schema...");
@@ -39,6 +22,22 @@ async function ensureSchema() {
       email TEXT NOT NULL UNIQUE,
       phone TEXT,
       is_vip BOOLEAN NOT NULL DEFAULT false,
+      owns_pet TEXT,
+      pet_type JSONB,
+      pet_type_other TEXT,
+      outdoor_frequency TEXT,
+      has_lost_pet TEXT,
+      how_found_pet TEXT,
+      uses_tracking_solution TEXT,
+      tracking_solution_details TEXT,
+      safety_worries JSONB,
+      safety_worries_other TEXT,
+      current_safety_methods TEXT,
+      important_features JSONB,
+      expected_challenges JSONB,
+      expected_challenges_other TEXT,
+      usefulness_rating INTEGER,
+      wish_feature TEXT,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
     )`;
     console.log("Schema ensured successfully");
@@ -72,12 +71,64 @@ export default async function handler(req: any, res: any) {
   try {
     console.log("Registration attempt:", req.body);
     await ensureSchema();
-    const registrationData = insertRegistrationSchema.parse(req.body);
+    
+    // Transform frontend field names to database field names
+    const {
+      email,
+      phone,
+      isVip,
+      ownsPet,
+      petType,
+      petTypeOther,
+      outdoorFrequency,
+      lostPetBefore,
+      howFoundPet,
+      currentTracking,
+      currentTrackingSpecify,
+      safetyWorries,
+      safetyWorriesOther,
+      currentSafetyMethods,
+      importantFeatures,
+      expectedChallenges,
+      expectedChallengesOther,
+      usefulnessRating,
+      wishFeature,
+    } = req.body;
+
+    const registrationData = {
+      email,
+      phone: phone || null,
+      isVip: isVip || false,
+      ownsPet: ownsPet || null,
+      petType: Array.isArray(petType) ? petType : null,
+      petTypeOther: petTypeOther || null,
+      outdoorFrequency: outdoorFrequency || null,
+      hasLostPet: lostPetBefore || null,
+      howFoundPet: howFoundPet || null,
+      usesTrackingSolution: currentTracking || null,
+      trackingSolutionDetails: currentTrackingSpecify || null,
+      safetyWorries: Array.isArray(safetyWorries) ? safetyWorries : null,
+      safetyWorriesOther: safetyWorriesOther || null,
+      currentSafetyMethods: currentSafetyMethods || null,
+      importantFeatures: Array.isArray(importantFeatures) ? importantFeatures : null,
+      expectedChallenges: Array.isArray(expectedChallenges) ? expectedChallenges : null,
+      expectedChallengesOther: expectedChallengesOther || null,
+      usefulnessRating: usefulnessRating || null,
+      wishFeature: wishFeature || null,
+    };
+
+    // Validate email is present
+    if (!email || typeof email !== 'string') {
+      return res.status(400).json({
+        message: "Email is required",
+        error: "MISSING_EMAIL"
+      });
+    }
     
     // Check if email already exists
     const existingRegistration = await db.select()
       .from(registrations)
-      .where(eq(registrations.email, registrationData.email));
+      .where(eq(registrations.email, email));
     
     if (existingRegistration.length > 0) {
       return res.status(409).json({ 
@@ -87,11 +138,7 @@ export default async function handler(req: any, res: any) {
     }
 
     const [registration] = await db.insert(registrations)
-      .values({
-        ...registrationData,
-        isVip: registrationData.isVip ?? false,
-        phone: registrationData.phone ?? null
-      })
+      .values(registrationData)
       .returning();
     
     console.log("Registration successful:", registration);

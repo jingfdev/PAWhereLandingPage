@@ -149,7 +149,13 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
 
   const handleSubmit = () => {
     const formData = form.getValues();
-    registerMutation.mutate(formData);
+    // Include the isVip prop from the component
+    const submissionData = {
+      ...formData,
+      isVip: isVip
+    };
+    console.log("Submitting registration data:", submissionData);
+    registerMutation.mutate(submissionData);
   };
 
   const handleOpenChange = (newOpen: boolean) => {
