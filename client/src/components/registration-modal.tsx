@@ -149,12 +149,42 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
 
   const handleSubmit = () => {
     const formData = form.getValues();
+    
+    // Validate that all required fields are present
+    console.log("=== PRE-SUBMISSION VALIDATION ===");
+    console.log("Step 1 fields:");
+    console.log("- ownsPet:", formData.ownsPet);
+    console.log("- petType:", formData.petType);
+    console.log("- outdoorFrequency:", formData.outdoorFrequency);
+    console.log("- lostPetBefore:", formData.lostPetBefore);
+    console.log("- howFoundPet:", formData.howFoundPet);
+    
+    console.log("Step 2 fields:");
+    console.log("- currentTracking:", formData.currentTracking);
+    console.log("- currentTrackingSpecify:", formData.currentTrackingSpecify);
+    console.log("- safetyWorries:", formData.safetyWorries);
+    console.log("- safetyWorriesOther:", formData.safetyWorriesOther);
+    console.log("- currentSafetyMethods:", formData.currentSafetyMethods);
+    
+    console.log("Step 3 fields:");
+    console.log("- importantFeatures:", formData.importantFeatures);
+    console.log("- expectedChallenges:", formData.expectedChallenges);
+    console.log("- expectedChallengesOther:", formData.expectedChallengesOther);
+    console.log("- usefulnessRating:", formData.usefulnessRating);
+    console.log("- wishFeature:", formData.wishFeature);
+    
     // Include the isVip prop from the component
     const submissionData = {
       ...formData,
       isVip: isVip
     };
+    console.log("=== FINAL SUBMISSION DATA ===");
     console.log("Submitting registration data:", submissionData);
+    console.log("Form data keys:", Object.keys(submissionData));
+    console.log("Form values for each field:");
+    Object.keys(submissionData).forEach(key => {
+      console.log(`- ${key}:`, submissionData[key as keyof typeof submissionData]);
+    });
     registerMutation.mutate(submissionData);
   };
 
