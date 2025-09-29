@@ -1,7 +1,14 @@
 import { defineConfig } from "drizzle-kit";
+import * as dotenv from 'dotenv';
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL, ensure the database is provisioned");
+// Load environment variables
+dotenv.config();
+
+// Use direct connection for drizzle-kit, fallback to regular DATABASE_URL
+const databaseUrl = process.env.DIRECT_DATABASE_URL || process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL or DIRECT_DATABASE_URL must be set in environment variables");
 }
 
 export default defineConfig({
@@ -9,6 +16,6 @@ export default defineConfig({
   schema: "./shared/schema.ts",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL,
+    url: databaseUrl,
   },
 });
