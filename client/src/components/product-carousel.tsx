@@ -135,21 +135,19 @@ export function ProductCarousel() {
             >
               {carouselProducts.map((product) => (
                 <div key={product.id} className="w-full flex-shrink-0">
-                  <div className={`${product.bgColor} rounded-xl p-4 lg:p-6 text-center relative`}>
-                    {/* Decorative elements */}
-                    <div className="absolute top-3 right-3 w-4 h-4 bg-primary-yellow/20 rounded-full animate-pulse"></div>
-                    <div className="absolute bottom-3 left-3 w-3 h-3 bg-primary-blue/20 rounded-full animate-pulse delay-1000"></div>
-                    
+                  <div className="relative group overflow-hidden rounded-xl">
                     <img
                       src={product.image}
                       alt={`PAWhere ${product.title}`}
-                      className="w-full max-w-xs mx-auto h-56 lg:h-64 object-contain rounded-xl mb-4 transform hover:scale-105 transition-transform duration-300"
+                      className="w-full h-56 lg:h-64 object-cover rounded-xl transform hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="space-y-2">
-                      <h4 className="text-xl lg:text-2xl font-bold text-primary-blue">
+                    {/* Hover overlay with text */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                    <div className="absolute inset-0 flex flex-col justify-center items-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
+                      <h4 className="text-xl lg:text-2xl font-bold mb-2 text-center">
                         {product.title}
                       </h4>
-                      <p className="text-gray-600 text-sm lg:text-base leading-relaxed">
+                      <p className="text-sm lg:text-base text-center leading-relaxed">
                         {product.description}
                       </p>
                     </div>
