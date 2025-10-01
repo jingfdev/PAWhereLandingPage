@@ -128,21 +128,21 @@ export function ProductCarousel() {
 
         {/* Right Side - Product Carousel */}
         <div className="lg:col-span-3 relative">
-          <div className="relative bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 lg:p-8 shadow-xl overflow-hidden border border-gray-100">
+          <div className="relative rounded-2xl overflow-hidden shadow-xl">
             <div 
               className="flex transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {carouselProducts.map((product) => (
                 <div key={product.id} className="w-full flex-shrink-0">
-                  <div className="relative group overflow-hidden rounded-xl">
+                  <div className="relative group overflow-hidden">
                     <img
                       src={product.image}
                       alt={`PAWhere ${product.title}`}
-                      className="w-full h-56 lg:h-64 object-cover rounded-xl transform hover:scale-105 transition-transform duration-300"
+                      className="w-full h-80 sm:h-96 lg:h-[480px] object-cover transform hover:scale-105 transition-transform duration-300"
                     />
                     {/* Hover overlay with text */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="absolute inset-0 flex flex-col justify-center items-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
                       <h4 className="text-xl lg:text-2xl font-bold mb-2 text-center">
                         {product.title}
@@ -161,7 +161,7 @@ export function ProductCarousel() {
               onClick={goToPrevious}
               variant="outline"
               size="icon"
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm shadow-lg rounded-full w-10 h-10 lg:w-12 lg:h-12 hover:bg-primary-yellow hover:text-white transition-all duration-300 border border-gray-200 hover:border-primary-yellow"
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm shadow-lg rounded-full w-10 h-10 lg:w-12 lg:h-12 hover:bg-primary-yellow hover:text-white transition-all duration-300 border border-gray-200 hover:border-primary-yellow z-10"
             >
               <span className="text-lg lg:text-xl">←</span>
             </Button>
@@ -170,7 +170,7 @@ export function ProductCarousel() {
               onClick={goToNext}
               variant="outline"
               size="icon"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm shadow-lg rounded-full w-10 h-10 lg:w-12 lg:h-12 hover:bg-primary-yellow hover:text-white transition-all duration-300 border border-gray-200 hover:border-primary-yellow"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm shadow-lg rounded-full w-10 h-10 lg:w-12 lg:h-12 hover:bg-primary-yellow hover:text-white transition-all duration-300 border border-gray-200 hover:border-primary-yellow z-10"
             >
               <span className="text-lg lg:text-xl">→</span>
             </Button>
