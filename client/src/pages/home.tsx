@@ -530,7 +530,7 @@ export default function Home() {
                 </div>
                 <div className="text-center">
                   <div className="text-4xl font-bold text-primary-blue mb-2">
-                    10+ Days
+                  30+ Days
                   </div>
                   <p className="text-gray-600">Battery Life</p>
                 </div>

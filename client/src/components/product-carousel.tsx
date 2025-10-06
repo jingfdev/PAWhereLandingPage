@@ -205,7 +205,7 @@ export function ProductCarousel() {
             </h3>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Real-time GPS Tracking, 4G LTE Connectivity, Safe Zone Alerts, 
-              Lightweight & Pet-Safe, 10+ Days Battery Life
+              Lightweight & Pet-Safe, 30+ Days Battery Life
             </p>
           </div>
           
