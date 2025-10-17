@@ -101,9 +101,19 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
 
   const registerMutation = useMutation({
     mutationFn: async (data: RegistrationData) => {
-      return await apiRequest("POST", "/api/register", data);
+      console.log("Sending registration data:", JSON.stringify(data, null, 2));
+      try {
+        const response = await apiRequest("POST", "/api/register", data);
+        const result = await response.json();
+        console.log("Registration response:", result);
+        return result;
+      } catch (error) {
+        console.error("Registration request error:", error);
+        throw error;
+      }
     },
     onSuccess: () => {
+      console.log("Registration mutation succeeded");
       toast({
         title: "Success!",
         description: "Welcome to PAWhere! We'll be in touch soon.",
@@ -118,8 +128,9 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
       queryClient.invalidateQueries({ queryKey: ["/api/register"] });
     },
     onError: (error: any) => {
+      console.error("Registration mutation error:", error);
       const errorMessage = error.message || "Something went wrong. Please try again.";
-      if (error.message.includes("Email already registered")) {
+      if (error.message && error.message.includes("Email already registered")) {
         toast({
           title: "Already Registered",
           description: "This email is already registered. You'll be contacted soon!",
@@ -189,6 +200,12 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
   };
 
   const handleOpenChange = (newOpen: boolean) => {
+    // Don't close dialog while mutation is in progress
+    if (registerMutation.isPending) {
+      console.warn("Cannot close dialog while registration is in progress");
+      return;
+    }
+    
     setOpen(newOpen);
     if (!newOpen) {
       setCurrentStep(0);

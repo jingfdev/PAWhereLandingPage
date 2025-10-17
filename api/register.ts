@@ -61,10 +61,12 @@ async function ensureSchema() {
 }
 
 export default async function handler(req: any, res: any) {
-  // Set CORS headers
+  // Set CORS headers for mobile and desktop compatibility
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.setHeader('Access-Control-Max-Age', '86400');
+  res.setHeader('Content-Type', 'application/json');
 
   // Handle preflight OPTIONS request
   if (req.method === 'OPTIONS') {
@@ -82,12 +84,22 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    console.log("Registration attempt:", req.body);
+    console.log("Registration attempt from", req.method, req.path);
     await ensureSchema();
     
+    // Get body safely - handle both JSON and form-urlencoded
+    let bodyData = req.body;
+    if (typeof bodyData === 'string') {
+      try {
+        bodyData = JSON.parse(bodyData);
+      } catch (e) {
+        console.error("Failed to parse body as JSON:", e);
+      }
+    }
+    
     // Log the raw request body to see what we're receiving
-    console.log("Raw request body keys:", Object.keys(req.body));
-    console.log("Raw request body:", JSON.stringify(req.body, null, 2));
+    console.log("Raw request body keys:", Object.keys(bodyData));
+    console.log("Raw request body:", JSON.stringify(bodyData, null, 2));
     
     const {
       email,
@@ -109,10 +121,12 @@ export default async function handler(req: any, res: any) {
       expectedChallengesOther,
       usefulnessRating,
       wishFeature,
-    } = req.body;
+    } = bodyData;
 
     // Log each field individually to debug
     console.log("Individual field values:");
+    console.log("- email:", email);
+    console.log("- phone:", phone);
     console.log("- ownsPet:", ownsPet);
     console.log("- petType:", petType);
     console.log("- outdoorFrequency:", outdoorFrequency);
@@ -153,11 +167,26 @@ export default async function handler(req: any, res: any) {
     console.log("Keys:", Object.keys(registrationData));
     console.log("Data:", JSON.stringify(registrationData, null, 2));
 
-    // Validate email is present
-    if (!email || typeof email !== 'string') {
+    // Validate email is present and properly formatted
+    if (!email) {
       return res.status(400).json({
         message: "Email is required",
-        error: "MISSING_EMAIL"
+        error: "MISSING_EMAIL",
+        receivedFields: {
+          email: email,
+          phone: phone
+        }
+      });
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (typeof email !== 'string' || !emailRegex.test(email)) {
+      return res.status(400).json({
+        message: "Invalid email format",
+        error: "INVALID_EMAIL_FORMAT",
+        receivedEmail: email,
+        receivedEmailType: typeof email
       });
     }
     
