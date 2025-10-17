@@ -29,9 +29,18 @@ export async function apiRequest(
   data?: unknown | undefined,
 ): Promise<Response> {
   const apiUrl = getApiUrl(url);
+  
+  const headers: Record<string, string> = {};
+  if (data) {
+    headers["Content-Type"] = "application/json";
+  }
+  
+  // Add request ID for tracking and debugging mobile issues
+  headers["X-Request-ID"] = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  
   const res = await fetch(apiUrl, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers,
     body: data ? JSON.stringify(data) : undefined,
     credentials: "include",
   });
