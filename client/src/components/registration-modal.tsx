@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -69,6 +69,7 @@ interface RegistrationModalProps {
 export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: RegistrationModalProps) {
   const [open, setOpen] = useState(isOpen || false);
   const [currentStep, setCurrentStep] = useState(0);
+  const [, forceUpdate] = useState({});
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -98,6 +99,16 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
       wishFeature: "",
     },
   });
+
+  // Watch all form fields to trigger re-renders on mobile devices
+  // This ensures canProceed() always has the latest values
+  useEffect(() => {
+    const subscription = form.watch(() => {
+      // Force a component re-render by updating a dummy state
+      forceUpdate({});
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   const registerMutation = useMutation({
     mutationFn: async (data: RegistrationData) => {
@@ -147,11 +158,95 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
   });
 
   const nextStep = async () => {
-    // Trigger validation to ensure all fields are captured on mobile
-    const isValid = await form.trigger();
+    // Validate current step using the same logic as canProceed
+    const {
+      email,
+      phone,
+      ownsPet,
+      petType,
+      outdoorFrequency,
+      lostPetBefore,
+      currentTracking,
+      safetyWorries,
+      currentSafetyMethods,
+      importantFeatures,
+      expectedChallenges,
+      usefulnessRating,
+      wishFeature,
+    } = form.getValues();
     
+    const trimmedEmail = email?.trim();
+    const trimmedPhone = phone?.trim();
+    const trimmedSafetyMethods = currentSafetyMethods?.trim();
+    const trimmedWishFeature = wishFeature?.trim();
+
+    let isValid = false;
+    let errorMessage = "Please fill all required fields";
+
+    switch (currentStep) {
+      case 0:
+        if (!trimmedEmail) {
+          errorMessage = "Email address is required";
+        } else if (!trimmedPhone) {
+          errorMessage = "Phone number is required";
+        } else {
+          isValid = true;
+        }
+        break;
+      case 1:
+        if (!ownsPet) {
+          errorMessage = "Please select whether you own a pet";
+        } else if (ownsPet === "yes") {
+          if (!petType || petType.length === 0) {
+            errorMessage = "Please select at least one pet type";
+          } else if (!outdoorFrequency) {
+            errorMessage = "Please select how often your pet goes outdoors";
+          } else if (!lostPetBefore) {
+            errorMessage = "Please select whether you've lost your pet before";
+          } else {
+            isValid = true;
+          }
+        } else {
+          isValid = true;
+        }
+        break;
+      case 2:
+        if (!currentTracking) {
+          errorMessage = "Please select whether you use tracking";
+        } else if (!safetyWorries || safetyWorries.length === 0) {
+          errorMessage = "Please select at least one safety concern";
+        } else if (!trimmedSafetyMethods) {
+          errorMessage = "Please describe your current safety methods";
+        } else {
+          isValid = true;
+        }
+        break;
+      case 3:
+        if (!importantFeatures || importantFeatures.length === 0) {
+          errorMessage = "Please select at least one important feature";
+        } else if (!expectedChallenges || expectedChallenges.length === 0) {
+          errorMessage = "Please select at least one expected challenge";
+        } else if (usefulnessRating === undefined || usefulnessRating === null) {
+          errorMessage = "Please rate the usefulness";
+        } else if (!trimmedWishFeature) {
+          errorMessage = "Please describe your wished feature";
+        } else {
+          isValid = true;
+        }
+        break;
+      default:
+        isValid = true;
+    }
+
     if (isValid && currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1);
+    } else if (!isValid) {
+      console.warn(`Validation failed at step ${currentStep}: ${errorMessage}`);
+      toast({
+        title: "Validation Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
     }
   };
 
@@ -269,37 +364,45 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
   };
 
   const canProceed = () => {
-    const email = form.watch("email");
-    const phone = form.watch("phone");
-    const ownsPet = form.watch("ownsPet");
-    const petType = form.watch("petType");
-    const outdoorFrequency = form.watch("outdoorFrequency");
-    const lostPetBefore = form.watch("lostPetBefore");
-    const currentTracking = form.watch("currentTracking");
-    const safetyWorries = form.watch("safetyWorries");
-    const currentSafetyMethods = form.watch("currentSafetyMethods");
-    const importantFeatures = form.watch("importantFeatures");
-    const expectedChallenges = form.watch("expectedChallenges");
-    const usefulnessRating = form.watch("usefulnessRating");
-    const wishFeature = form.watch("wishFeature");
+    // Get current form state directly instead of relying on watch for better mobile reliability
+    const {
+      email,
+      phone,
+      ownsPet,
+      petType,
+      outdoorFrequency,
+      lostPetBefore,
+      currentTracking,
+      safetyWorries,
+      currentSafetyMethods,
+      importantFeatures,
+      expectedChallenges,
+      usefulnessRating,
+      wishFeature,
+    } = form.getValues();
+    
+    const trimmedEmail = email?.trim();
+    const trimmedPhone = phone?.trim();
+    const trimmedSafetyMethods = currentSafetyMethods?.trim();
+    const trimmedWishFeature = wishFeature?.trim();
 
     switch (currentStep) {
       case 0:
-        return email && phone;
+        return !!(trimmedEmail && trimmedPhone);
       case 1:
-        return (
+        return !!(
           ownsPet &&
           (ownsPet === "no" ||
             (petType && petType.length > 0 && outdoorFrequency && lostPetBefore))
         );
       case 2:
-        return currentTracking && safetyWorries && safetyWorries.length > 0 && currentSafetyMethods;
+        return !!(currentTracking && safetyWorries && safetyWorries.length > 0 && trimmedSafetyMethods);
       case 3:
-        return (
+        return !!(
           importantFeatures && importantFeatures.length > 0 &&
           expectedChallenges && expectedChallenges.length > 0 &&
           usefulnessRating !== undefined &&
-          wishFeature
+          trimmedWishFeature
         );
       default:
         return true;
