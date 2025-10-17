@@ -142,25 +142,25 @@ export default async function handler(req: any, res: any) {
     console.log("- wishFeature:", wishFeature);
 
     const registrationData = {
-      email,
-      phone: phone || null,
+      email: email?.trim(),
+      phone: phone?.trim() || null,
       isVip: isVip || false,
-      ownsPet: ownsPet || null,  // camelCase to match schema
-      petType: Array.isArray(petType) ? petType : null,  // camelCase to match schema
-      petTypeOther: petTypeOther || null,  // camelCase to match schema
-      outdoorFrequency: outdoorFrequency || null,  // camelCase to match schema
-      hasLostPet: lostPetBefore || null,  // camelCase to match schema
-      howFoundPet: howFoundPet || null,  // camelCase to match schema
-      usesTrackingSolution: currentTracking || null,  // camelCase to match schema
-      trackingSolutionDetails: currentTrackingSpecify || null,  // camelCase to match schema
-      safetyWorries: Array.isArray(safetyWorries) ? safetyWorries : null,  // camelCase to match schema
-      safetyWorriesOther: safetyWorriesOther || null,  // camelCase to match schema
-      currentSafetyMethods: currentSafetyMethods || null,  // camelCase to match schema
-      importantFeatures: Array.isArray(importantFeatures) ? importantFeatures : null,  // camelCase to match schema
-      expectedChallenges: Array.isArray(expectedChallenges) ? expectedChallenges : null,  // camelCase to match schema
-      expectedChallengesOther: expectedChallengesOther || null,  // camelCase to match schema
-      usefulnessRating: usefulnessRating || null,  // camelCase to match schema
-      wishFeature: wishFeature || null,  // camelCase to match schema
+      ownsPet: ownsPet || null,
+      petType: Array.isArray(petType) ? petType : null,
+      petTypeOther: petTypeOther || null,
+      outdoorFrequency: outdoorFrequency || null,
+      hasLostPet: lostPetBefore || null,
+      howFoundPet: howFoundPet || null,
+      usesTrackingSolution: currentTracking || null,
+      trackingSolutionDetails: currentTrackingSpecify || null,
+      safetyWorries: Array.isArray(safetyWorries) ? safetyWorries : null,
+      safetyWorriesOther: safetyWorriesOther || null,
+      currentSafetyMethods: currentSafetyMethods || null,
+      importantFeatures: Array.isArray(importantFeatures) ? importantFeatures : null,
+      expectedChallenges: Array.isArray(expectedChallenges) ? expectedChallenges : null,
+      expectedChallengesOther: expectedChallengesOther || null,
+      usefulnessRating: usefulnessRating ? parseInt(usefulnessRating) : null,
+      wishFeature: wishFeature || null,
     };
 
     console.log("Transformed registration data:");

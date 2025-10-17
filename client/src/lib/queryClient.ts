@@ -38,15 +38,36 @@ export async function apiRequest(
   // Add request ID for tracking and debugging mobile issues
   headers["X-Request-ID"] = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   
-  const res = await fetch(apiUrl, {
-    method,
-    headers,
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
-  });
+  // Add a longer timeout for mobile networks (30 seconds instead of default)
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
+  
+  try {
+    const res = await fetch(apiUrl, {
+      method,
+      headers,
+      body: data ? JSON.stringify(data) : undefined,
+      credentials: "include",
+      signal: controller.signal,
+    });
 
-  await throwIfResNotOk(res);
-  return res;
+    clearTimeout(timeoutId);
+    
+    if (!res.ok) {
+      const text = (await res.text()) || res.statusText;
+      throw new Error(`${res.status}: ${text}`);
+    }
+
+    return res;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    
+    if (error instanceof TypeError && error.message === 'Failed to fetch') {
+      throw new Error('Network error - check your connection');
+    }
+    
+    throw error;
+  }
 }
 
 type UnauthorizedBehavior = "returnNull" | "throw";

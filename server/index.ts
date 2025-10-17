@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Add CORS headers for all requests
+// Add CORS headers for all requests BEFORE error handlers
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
@@ -20,6 +20,19 @@ app.use((req, res, next) => {
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
+  }
+  next();
+});
+
+// Add error handler for JSON parsing errors AFTER parsers
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (err instanceof SyntaxError && 'body' in err) {
+    console.error("JSON Parse Error on", req.method, req.path, ":", err.message);
+    return res.status(400).json({
+      message: "Invalid JSON in request body",
+      error: "PARSE_ERROR",
+      details: err.message
+    });
   }
   next();
 });

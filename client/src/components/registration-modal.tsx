@@ -159,11 +159,14 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
   };
 
   const handleSubmit = () => {
+    // Get fresh form values - sometimes mobile form state can be stale
     const formData = form.getValues();
     
     // Validate that all required fields are present
     console.log("=== PRE-SUBMISSION VALIDATION ===");
     console.log("Step 1 fields:");
+    console.log("- email:", formData.email);
+    console.log("- phone:", formData.phone);
     console.log("- ownsPet:", formData.ownsPet);
     console.log("- petType:", formData.petType);
     console.log("- outdoorFrequency:", formData.outdoorFrequency);
@@ -184,19 +187,61 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
     console.log("- usefulnessRating:", formData.usefulnessRating);
     console.log("- wishFeature:", formData.wishFeature);
     
-    // Include the isVip prop from the component
-    const submissionData = {
-      ...formData,
-      isVip: isVip
+    // Check if data is empty - mobile issue detection
+    if (!formData.email || !formData.phone) {
+      console.error("ERROR: Missing critical fields on form");
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields (Email and Phone)",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Create submission data with explicit field mapping to ensure nothing is lost
+    const submissionData: RegistrationData = {
+      email: formData.email.trim(),
+      phone: formData.phone.trim(),
+      ownsPet: formData.ownsPet,
+      petType: formData.petType || [],
+      petTypeOther: formData.petTypeOther,
+      outdoorFrequency: formData.outdoorFrequency,
+      lostPetBefore: formData.lostPetBefore,
+      howFoundPet: formData.howFoundPet,
+      currentTracking: formData.currentTracking,
+      currentTrackingSpecify: formData.currentTrackingSpecify,
+      safetyWorries: formData.safetyWorries || [],
+      safetyWorriesOther: formData.safetyWorriesOther,
+      currentSafetyMethods: formData.currentSafetyMethods,
+      importantFeatures: formData.importantFeatures || [],
+      expectedChallenges: formData.expectedChallenges || [],
+      expectedChallengesOther: formData.expectedChallengesOther,
+      usefulnessRating: formData.usefulnessRating,
+      wishFeature: formData.wishFeature,
     };
+    
     console.log("=== FINAL SUBMISSION DATA ===");
     console.log("Submitting registration data:", submissionData);
-    console.log("Form data keys:", Object.keys(submissionData));
-    console.log("Form values for each field:");
-    Object.keys(submissionData).forEach(key => {
-      console.log(`- ${key}:`, submissionData[key as keyof typeof submissionData]);
+    console.log("JSON stringified:", JSON.stringify(submissionData));
+    console.log("Data size:", JSON.stringify(submissionData).length, "bytes");
+    
+    // Verify all fields are present and not undefined
+    const allFieldsPresent = Object.keys(submissionData).every(key => {
+      const value = submissionData[key as keyof typeof submissionData];
+      console.log(`Field ${key}:`, value, `(type: ${typeof value})`);
+      return true;
     });
-    registerMutation.mutate(submissionData);
+    
+    console.log("All fields present:", allFieldsPresent);
+    
+    // Send with isVip flag from component
+    const finalData = {
+      ...submissionData,
+      isVip: isVip
+    };
+    
+    console.log("Final data with isVip:", finalData);
+    registerMutation.mutate(finalData);
   };
 
   const handleOpenChange = (newOpen: boolean) => {
