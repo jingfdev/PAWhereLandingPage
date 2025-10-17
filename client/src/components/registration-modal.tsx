@@ -146,8 +146,11 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
     },
   });
 
-  const nextStep = () => {
-    if (currentStep < totalSteps - 1) {
+  const nextStep = async () => {
+    // Trigger validation to ensure all fields are captured on mobile
+    const isValid = await form.trigger();
+    
+    if (isValid && currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -158,89 +161,93 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
     }
   };
 
-  const handleSubmit = () => {
-    // Get fresh form values - sometimes mobile form state can be stale
-    const formData = form.getValues();
+  const handleSubmit = async () => {
+    // Force complete form validation - this is critical for mobile
+    // where form state might be out of sync with UI
+    const isFormValid = await form.trigger();
     
-    // Validate that all required fields are present
-    console.log("=== PRE-SUBMISSION VALIDATION ===");
-    console.log("Step 1 fields:");
-    console.log("- email:", formData.email);
-    console.log("- phone:", formData.phone);
-    console.log("- ownsPet:", formData.ownsPet);
-    console.log("- petType:", formData.petType);
-    console.log("- outdoorFrequency:", formData.outdoorFrequency);
-    console.log("- lostPetBefore:", formData.lostPetBefore);
-    console.log("- howFoundPet:", formData.howFoundPet);
-    
-    console.log("Step 2 fields:");
-    console.log("- currentTracking:", formData.currentTracking);
-    console.log("- currentTrackingSpecify:", formData.currentTrackingSpecify);
-    console.log("- safetyWorries:", formData.safetyWorries);
-    console.log("- safetyWorriesOther:", formData.safetyWorriesOther);
-    console.log("- currentSafetyMethods:", formData.currentSafetyMethods);
-    
-    console.log("Step 3 fields:");
-    console.log("- importantFeatures:", formData.importantFeatures);
-    console.log("- expectedChallenges:", formData.expectedChallenges);
-    console.log("- expectedChallengesOther:", formData.expectedChallengesOther);
-    console.log("- usefulnessRating:", formData.usefulnessRating);
-    console.log("- wishFeature:", formData.wishFeature);
-    
-    // Check if data is empty - mobile issue detection
-    if (!formData.email || !formData.phone) {
-      console.error("ERROR: Missing critical fields on form");
+    if (!isFormValid) {
+      console.error("Form validation failed:", form.formState.errors);
       toast({
-        title: "Error",
-        description: "Please fill in all required fields (Email and Phone)",
+        title: "Validation Error",
+        description: "Please check all required fields",
         variant: "destructive",
       });
       return;
     }
     
-    // Create submission data with explicit field mapping to ensure nothing is lost
+    // Use a small delay to ensure all form state updates have been processed
+    // This is especially important for mobile browsers
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Get fresh form values directly from the form state
+    // Do NOT use form.getValues() alone - use form.watch to ensure all fields are captured
+    const currentFormState = form.getValues();
+    
+    console.log("=== MOBILE-OPTIMIZED SUBMISSION ===");
+    console.log("Timestamp:", new Date().toISOString());
+    console.log("All form values:", JSON.stringify(currentFormState, null, 2));
+    
+    // Validate critical fields
+    if (!currentFormState.email || !currentFormState.email.trim()) {
+      toast({
+        title: "Missing Email",
+        description: "Email address is required",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (!currentFormState.phone || !currentFormState.phone.trim()) {
+      toast({
+        title: "Missing Phone",
+        description: "Phone number is required",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Clean and prepare data for submission
     const submissionData: RegistrationData = {
-      email: formData.email.trim(),
-      phone: formData.phone.trim(),
-      ownsPet: formData.ownsPet,
-      petType: formData.petType || [],
-      petTypeOther: formData.petTypeOther,
-      outdoorFrequency: formData.outdoorFrequency,
-      lostPetBefore: formData.lostPetBefore,
-      howFoundPet: formData.howFoundPet,
-      currentTracking: formData.currentTracking,
-      currentTrackingSpecify: formData.currentTrackingSpecify,
-      safetyWorries: formData.safetyWorries || [],
-      safetyWorriesOther: formData.safetyWorriesOther,
-      currentSafetyMethods: formData.currentSafetyMethods,
-      importantFeatures: formData.importantFeatures || [],
-      expectedChallenges: formData.expectedChallenges || [],
-      expectedChallengesOther: formData.expectedChallengesOther,
-      usefulnessRating: formData.usefulnessRating,
-      wishFeature: formData.wishFeature,
+      email: (currentFormState.email || "").trim(),
+      phone: (currentFormState.phone || "").trim(),
+      ownsPet: currentFormState.ownsPet || undefined,
+      petType: Array.isArray(currentFormState.petType) ? currentFormState.petType : [],
+      petTypeOther: currentFormState.petTypeOther || undefined,
+      outdoorFrequency: currentFormState.outdoorFrequency || undefined,
+      lostPetBefore: currentFormState.lostPetBefore || undefined,
+      howFoundPet: currentFormState.howFoundPet || undefined,
+      currentTracking: currentFormState.currentTracking || undefined,
+      currentTrackingSpecify: currentFormState.currentTrackingSpecify || undefined,
+      safetyWorries: Array.isArray(currentFormState.safetyWorries) ? currentFormState.safetyWorries : [],
+      safetyWorriesOther: currentFormState.safetyWorriesOther || undefined,
+      currentSafetyMethods: currentFormState.currentSafetyMethods || undefined,
+      importantFeatures: Array.isArray(currentFormState.importantFeatures) ? currentFormState.importantFeatures : [],
+      expectedChallenges: Array.isArray(currentFormState.expectedChallenges) ? currentFormState.expectedChallenges : [],
+      expectedChallengesOther: currentFormState.expectedChallengesOther || undefined,
+      usefulnessRating: currentFormState.usefulnessRating,
+      wishFeature: currentFormState.wishFeature || undefined,
     };
     
-    console.log("=== FINAL SUBMISSION DATA ===");
-    console.log("Submitting registration data:", submissionData);
-    console.log("JSON stringified:", JSON.stringify(submissionData));
+    console.log("=== CLEANED SUBMISSION DATA ===");
+    console.log("Data to submit:", submissionData);
     console.log("Data size:", JSON.stringify(submissionData).length, "bytes");
     
-    // Verify all fields are present and not undefined
-    const allFieldsPresent = Object.keys(submissionData).every(key => {
-      const value = submissionData[key as keyof typeof submissionData];
-      console.log(`Field ${key}:`, value, `(type: ${typeof value})`);
-      return true;
+    // Log each field for debugging
+    Object.entries(submissionData).forEach(([key, value]) => {
+      console.log(`[${key}]:`, value, `(${typeof value}, length: ${Array.isArray(value) ? value.length : 'N/A'})`);
     });
     
-    console.log("All fields present:", allFieldsPresent);
-    
-    // Send with isVip flag from component
+    // Include isVip flag
     const finalData = {
       ...submissionData,
       isVip: isVip
     };
     
     console.log("Final data with isVip:", finalData);
+    console.log("Ready to submit - calling mutation");
+    
+    // Submit the form
     registerMutation.mutate(finalData);
   };
 

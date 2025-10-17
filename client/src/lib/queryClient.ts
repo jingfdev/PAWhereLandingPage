@@ -38,9 +38,20 @@ export async function apiRequest(
   // Add request ID for tracking and debugging mobile issues
   headers["X-Request-ID"] = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   
+  // Add mobile user agent detection
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  headers["X-Device-Type"] = isMobile ? "mobile" : "desktop";
+  
   // Add a longer timeout for mobile networks (30 seconds instead of default)
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 30000);
+  
+  // Log data being sent for debugging mobile issues
+  if (data) {
+    console.log("[apiRequest] Sending data:", JSON.stringify(data));
+    console.log("[apiRequest] Device type:", isMobile ? "mobile" : "desktop");
+    console.log("[apiRequest] Data keys:", Object.keys(data as Record<string, unknown>));
+  }
   
   try {
     const res = await fetch(apiUrl, {
