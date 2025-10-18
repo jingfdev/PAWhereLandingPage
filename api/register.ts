@@ -108,10 +108,10 @@ export default async function handler(req: any, res: any) {
       petType,
       petTypeOther,
       outdoorFrequency,
-      lostPetBefore,
+      hasLostPet,
       howFoundPet,
-      currentTracking,
-      currentTrackingSpecify,
+      usesTrackingSolution,
+      trackingSolutionDetails,
       safetyWorries,
       safetyWorriesOther,
       currentSafetyMethods,
@@ -129,10 +129,10 @@ export default async function handler(req: any, res: any) {
     console.log("- ownsPet:", ownsPet);
     console.log("- petType:", petType);
     console.log("- outdoorFrequency:", outdoorFrequency);
-    console.log("- lostPetBefore:", lostPetBefore);
+    console.log("- hasLostPet:", hasLostPet);
     console.log("- howFoundPet:", howFoundPet);
-    console.log("- currentTracking:", currentTracking);
-    console.log("- currentTrackingSpecify:", currentTrackingSpecify);
+    console.log("- usesTrackingSolution:", usesTrackingSolution);
+    console.log("- trackingSolutionDetails:", trackingSolutionDetails);
     console.log("- safetyWorries:", safetyWorries);
     console.log("- currentSafetyMethods:", currentSafetyMethods);
     console.log("- importantFeatures:", importantFeatures);
@@ -148,10 +148,10 @@ export default async function handler(req: any, res: any) {
       petType: Array.isArray(petType) ? petType : null,
       petTypeOther: petTypeOther || null,
       outdoorFrequency: outdoorFrequency || null,
-      hasLostPet: lostPetBefore || null,
+      hasLostPet: hasLostPet || null,
       howFoundPet: howFoundPet || null,
-      usesTrackingSolution: currentTracking || null,
-      trackingSolutionDetails: currentTrackingSpecify || null,
+      usesTrackingSolution: usesTrackingSolution || null,
+      trackingSolutionDetails: trackingSolutionDetails || null,
       safetyWorries: Array.isArray(safetyWorries) ? safetyWorries : null,
       safetyWorriesOther: safetyWorriesOther || null,
       currentSafetyMethods: currentSafetyMethods || null,

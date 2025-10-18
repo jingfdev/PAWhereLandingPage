@@ -39,12 +39,12 @@ const registrationSchema = z.object({
   petType: z.array(z.string()).optional(),
   petTypeOther: z.string().optional(),
   outdoorFrequency: z.enum(["rarely", "sometimes", "often"]).optional(),
-  lostPetBefore: z.enum(["yes", "no"]).optional(),
+  hasLostPet: z.enum(["yes", "no"]).optional(),
   howFoundPet: z.string().optional(),
 
   // Current Solutions & Pain Points
-  currentTracking: z.enum(["yes", "no"]).optional(),
-  currentTrackingSpecify: z.string().optional(),
+  usesTrackingSolution: z.enum(["yes", "no"]).optional(),
+  trackingSolutionDetails: z.string().optional(),
   safetyWorries: z.array(z.string()).optional(),
   safetyWorriesOther: z.string().optional(),
   currentSafetyMethods: z.string().optional(),
@@ -85,10 +85,10 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
       petType: [],
       petTypeOther: "",
       outdoorFrequency: undefined,
-      lostPetBefore: undefined,
+      hasLostPet: undefined,
       howFoundPet: "",
-      currentTracking: undefined,
-      currentTrackingSpecify: "",
+      usesTrackingSolution: undefined,
+      trackingSolutionDetails: "",
       safetyWorries: [],
       safetyWorriesOther: "",
       currentSafetyMethods: "",
@@ -165,8 +165,9 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
       ownsPet,
       petType,
       outdoorFrequency,
-      lostPetBefore,
-      currentTracking,
+      hasLostPet,
+      howFoundPet,
+      usesTrackingSolution,
       safetyWorries,
       currentSafetyMethods,
       importantFeatures,
@@ -174,7 +175,6 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
       usefulnessRating,
       wishFeature,
     } = form.getValues();
-    
     const trimmedEmail = email?.trim();
     const trimmedPhone = phone?.trim();
     const trimmedSafetyMethods = currentSafetyMethods?.trim();
@@ -201,7 +201,7 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
             errorMessage = "Please select at least one pet type";
           } else if (!outdoorFrequency) {
             errorMessage = "Please select how often your pet goes outdoors";
-          } else if (!lostPetBefore) {
+          } else if (!hasLostPet) {
             errorMessage = "Please select whether you've lost your pet before";
           } else {
             isValid = true;
@@ -211,7 +211,7 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
         }
         break;
       case 2:
-        if (!currentTracking) {
+        if (!usesTrackingSolution) {
           errorMessage = "Please select whether you use tracking";
         } else if (!safetyWorries || safetyWorries.length === 0) {
           errorMessage = "Please select at least one safety concern";
@@ -310,10 +310,10 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
       petType: Array.isArray(currentFormState.petType) ? currentFormState.petType : [],
       petTypeOther: currentFormState.petTypeOther || undefined,
       outdoorFrequency: currentFormState.outdoorFrequency || undefined,
-      lostPetBefore: currentFormState.lostPetBefore || undefined,
+      hasLostPet: currentFormState.hasLostPet || undefined,
       howFoundPet: currentFormState.howFoundPet || undefined,
-      currentTracking: currentFormState.currentTracking || undefined,
-      currentTrackingSpecify: currentFormState.currentTrackingSpecify || undefined,
+      usesTrackingSolution: currentFormState.usesTrackingSolution || undefined,
+      trackingSolutionDetails: currentFormState.trackingSolutionDetails || undefined,
       safetyWorries: Array.isArray(currentFormState.safetyWorries) ? currentFormState.safetyWorries : [],
       safetyWorriesOther: currentFormState.safetyWorriesOther || undefined,
       currentSafetyMethods: currentFormState.currentSafetyMethods || undefined,
@@ -371,8 +371,8 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
       ownsPet,
       petType,
       outdoorFrequency,
-      lostPetBefore,
-      currentTracking,
+      hasLostPet,
+      usesTrackingSolution,
       safetyWorries,
       currentSafetyMethods,
       importantFeatures,
@@ -393,10 +393,10 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
         return !!(
           ownsPet &&
           (ownsPet === "no" ||
-            (petType && petType.length > 0 && outdoorFrequency && lostPetBefore))
+            (petType && petType.length > 0 && outdoorFrequency && hasLostPet))
         );
       case 2:
-        return !!(currentTracking && safetyWorries && safetyWorries.length > 0 && trimmedSafetyMethods);
+        return !!(usesTrackingSolution && safetyWorries && safetyWorries.length > 0 && trimmedSafetyMethods);
       case 3:
         return !!(
           importantFeatures && importantFeatures.length > 0 &&
@@ -411,8 +411,8 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
 
   const renderStep = () => {
     const ownsPet = form.watch("ownsPet");
-    const lostPetBefore = form.watch("lostPetBefore");
-    const currentTracking = form.watch("currentTracking");
+    const hasLostPet = form.watch("hasLostPet");
+    const usesTrackingSolution = form.watch("usesTrackingSolution");
     const petType = form.watch("petType");
     const safetyWorries = form.watch("safetyWorries");
     const importantFeatures = form.watch("importantFeatures");
@@ -649,7 +649,7 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
 
                   <FormField
                     control={form.control}
-                    name="lostPetBefore"
+                    name="hasLostPet"
                     render={({ field }) => (
                       <FormItem className="space-y-3">
                         <Label className="text-base font-medium">4. Have you ever lost your pet before?</Label>
@@ -659,12 +659,12 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
                               <input
                                 type="radio"
                                 id="lost-yes"
-                                name="lostPetBefore"
+                                name="hasLostPet"
                                 value="yes"
-                                checked={form.watch("lostPetBefore") === "yes"}
+                                checked={form.watch("hasLostPet") === "yes"}
                                 onChange={(e) => {
                                   if (e.target.checked) {
-                                    form.setValue("lostPetBefore", "yes");
+                                    form.setValue("hasLostPet", "yes");
                                   }
                                 }}
                                 className="w-4 h-4 text-[#f4a905] bg-gray-100 border-gray-300 focus:ring-[#f4a905] focus:ring-2 accent-[#f4a905]"
@@ -675,12 +675,12 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
                               <input
                                 type="radio"
                                 id="lost-no"
-                                name="lostPetBefore"
+                                name="hasLostPet"
                                 value="no"
-                                checked={form.watch("lostPetBefore") === "no"}
+                                checked={form.watch("hasLostPet") === "no"}
                                 onChange={(e) => {
                                   if (e.target.checked) {
-                                    form.setValue("lostPetBefore", "no");
+                                    form.setValue("hasLostPet", "no");
                                   }
                                 }}
                                 className="w-4 h-4 text-[#f4a905] bg-gray-100 border-gray-300 focus:ring-[#f4a905] focus:ring-2 accent-[#f4a905]"
@@ -694,7 +694,7 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
                     )}
                   />
 
-                  {lostPetBefore === "yes" && (
+                  {hasLostPet === "yes" && (
                     <div className="space-y-2">
                       <Label htmlFor="how-found" className="text-base font-medium">5. If yes, how did you find your pet (or did you)?</Label>
                       <Textarea
@@ -725,7 +725,7 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
             <div className="space-y-6">
               <FormField
                 control={form.control}
-                name="currentTracking"
+                name="usesTrackingSolution"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
                     <Label className="text-base font-medium">
@@ -737,12 +737,12 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
                           <input
                             type="radio"
                             id="tracking-yes"
-                            name="currentTracking"
+                            name="usesTrackingSolution"
                             value="yes"
-                            checked={form.watch("currentTracking") === "yes"}
+                            checked={form.watch("usesTrackingSolution") === "yes"}
                             onChange={(e) => {
                               if (e.target.checked) {
-                                form.setValue("currentTracking", "yes");
+                                form.setValue("usesTrackingSolution", "yes");
                               }
                             }}
                             className="w-4 h-4 text-[#f4a905] bg-gray-100 border-gray-300 focus:ring-[#f4a905] focus:ring-2 accent-[#f4a905]"
@@ -753,12 +753,12 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
                           <input
                             type="radio"
                             id="tracking-no"
-                            name="currentTracking"
+                            name="usesTrackingSolution"
                             value="no"
-                            checked={form.watch("currentTracking") === "no"}
+                            checked={form.watch("usesTrackingSolution") === "no"}
                             onChange={(e) => {
                               if (e.target.checked) {
-                                form.setValue("currentTracking", "no");
+                                form.setValue("usesTrackingSolution", "no");
                               }
                             }}
                             className="w-4 h-4 text-[#f4a905] bg-gray-100 border-gray-300 focus:ring-[#f4a905] focus:ring-2 accent-[#f4a905]"
@@ -772,12 +772,12 @@ export function RegistrationModal({ isOpen, onClose, trigger, isVip = false }: R
                 )}
               />
 
-              {currentTracking === "yes" && (
+              {usesTrackingSolution === "yes" && (
                 <div className="mt-2">
                   <Input
                     placeholder="Please specify which tracking solution..."
-                    value={form.watch("currentTrackingSpecify") || ""}
-                    onChange={(e) => form.setValue("currentTrackingSpecify", e.target.value)}
+                    value={form.watch("trackingSolutionDetails") || ""}
+                    onChange={(e) => form.setValue("trackingSolutionDetails", e.target.value)}
                     className="focus:ring-[#f4a905] focus:border-[#f4a905]"
                   />
                 </div>
