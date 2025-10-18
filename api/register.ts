@@ -61,14 +61,13 @@ async function ensureSchema() {
 }
 
 export default async function handler(req: any, res: any) {
-  // Set CORS headers for mobile and desktop compatibility
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-  res.setHeader('Access-Control-Max-Age', '86400');
+  // CORS headers are already set by server middleware in server/index.ts
+  // No need to set them again - this was causing conflicts on mobile
+  
+  // Set response content type
   res.setHeader('Content-Type', 'application/json');
 
-  // Handle preflight OPTIONS request
+  // Handle preflight OPTIONS request (already handled by middleware, but being safe)
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
